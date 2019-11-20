@@ -1,5 +1,6 @@
 package org.valkyrienskies.addon.control.block.multiblocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -73,9 +74,11 @@ public abstract class TileEntityMultiblock<E extends IMultiblockSchematic, F ext
                 if (tileToBreak instanceof ITileEntityMultiblock) {
                     ((ITileEntityMultiblock) tileToBreak).disassembleMultiblockLocal();
                 }
-                Block block = this.getWorld().getBlockState.getBlock();
+
+                // Set any crates to be invisible
+                Block block = this.getWorld().getBlockState(posToBreak).getBlock();
 				if (block instanceof BaseCrate) {
-					block.multiblockType = EnumMultiblockType.NONE;
+					((BaseCrate) block).multiblockType = EnumMultiblockType.NONE;
 				}
             }
         }

@@ -14,12 +14,41 @@
  *
  */
 
-package org.valkyrienskies.addon.control.item;
+package org.valkyrienskies.addon.control.block;
 
-import org.valkyrienskies.addon.control.util.BaseItem;
+import java.util.List;
+import javax.annotation.Nullable;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import org.valkyrienskies.addon.control.util.BaseBlock;
 
-public class ItemIronGear extends BaseItem {
-	public ItemIronGear() {
-        super("iron_gear", true);
+public class BlockSandyBricks extends BaseBlock {
+
+    public BlockSandyBricks() {
+        super("sandy_bricks", Material.ROCK, 0.0F, false);
+		this.setHardness(3.0F);
+		this.setResistance(15.0F);
+		this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> itemInformation,
+        ITooltipFlag advanced) {
+        itemInformation.add(TextFormatting.BLUE + I18n.format("tooltip.vs_control.sandy_bricks"));
+    }
+
 }

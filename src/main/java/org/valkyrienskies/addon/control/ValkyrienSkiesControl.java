@@ -24,8 +24,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -59,6 +63,8 @@ import org.valkyrienskies.addon.control.capability.StorageLastRelay;
 import org.valkyrienskies.addon.control.item.ItemBaseWire;
 import org.valkyrienskies.addon.control.item.ItemIronGear;
 import org.valkyrienskies.addon.control.item.ItemSailFabric;
+import org.valkyrienskies.addon.control.item.ItemSandyBrick;
+import org.valkyrienskies.addon.control.item.ItemSandyClay;
 import org.valkyrienskies.addon.control.item.ItemVSWrench;
 import org.valkyrienskies.addon.control.network.MessagePlayerStoppedPiloting;
 import org.valkyrienskies.addon.control.network.MessagePlayerStoppedPilotingHandler;
@@ -66,6 +72,7 @@ import org.valkyrienskies.addon.control.network.MessageStartPiloting;
 import org.valkyrienskies.addon.control.network.MessageStartPilotingHandler;
 import org.valkyrienskies.addon.control.network.MessageStopPiloting;
 import org.valkyrienskies.addon.control.network.MessageStopPilotingHandler;
+import org.valkyrienskies.addon.control.nodenetwork.EnumWireType;
 import org.valkyrienskies.addon.control.piloting.PilotControlsMessage;
 import org.valkyrienskies.addon.control.piloting.PilotControlsMessageHandler;
 import org.valkyrienskies.addon.control.proxy.CommonProxyControl;
@@ -118,7 +125,11 @@ public class ValkyrienSkiesControl {
     public BlocksValkyrienSkiesControl vsControlBlocks;
     public Item relayWire;
     public Item vanishingWire;
-    public Item vsWrench;
+	public Item vsWrench;
+	public Item ironGear;
+	public Item sailFabric;
+	public Item sandyClay;
+	public Item sandyBrick;
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -152,6 +163,8 @@ public class ValkyrienSkiesControl {
 		INSTANCE.vsWrench = new ItemVSWrench();
 		INSTANCE.sailFabric = new ItemSailFabric();
 		INSTANCE.ironGear = new ItemIronGear();
+		INSTANCE.sandyClay = new ItemSandyClay();
+		INSTANCE.sandyBrick = new ItemSandyBrick();
 	}
 
     public void registerRecipes() {
@@ -205,12 +218,21 @@ public class ValkyrienSkiesControl {
             "SWS",
             'S', Items.STRING,
             'W', Item.getItemFromBlock(Blocks.WOOL));
-        addShapedRecipe(INSTANCE.ironGear, 1,
+		addShapedRecipe(INSTANCE.ironGear, 1,
             " I ",
             "ISI",
             " I ",
             'S', Items.STICK,
             'I', Items.IRON_INGOT);
+
+		addShapelessRecipe(INSTANCE.sandyClay, 3,
+			new ItemStack(Blocks.SAND, 1),
+			new ItemStack(Items.CLAY_BALL, 3));
+		addSmelting(INSTANCE.sandyBrick, 1, INSTANCE.sandyClay, 1, 0.2F);
+		addShapedRecipe(INSTANCE.vsControlBlocks.sandyBricks, 1,
+            "BB",
+            "BB",
+            'B', INSTANCE.sandyBrick);
 
 		addShapedRecipe(INSTANCE.vsWrench, 1,
 			" I ",
@@ -218,56 +240,66 @@ public class ValkyrienSkiesControl {
 			"I  ",
 			'I', Items.IRON_INGOT,
 			'V', ValkyrienSkiesWorld.INSTANCE.valkyriumCrystal);
-        addShapedRecipe(INSTANCE.vsControlBlocks.compactedValkyrium, 1,
+		addShapedRecipe(INSTANCE.vsControlBlocks.compactedValkyrium, 1,
             "VVV",
             "VVV",
             "VVV",
             'V', ValkyrienSkiesWorld.INSTANCE.valkyriumCrystal);
 
-		addShapedRecipe(INSTANCE.vsControlBlocks.frame,
+		addShapedRecipe(INSTANCE.vsControlBlocks.frame, 1,
             "sSs",
             "s s",
             "sSs",
             'S', Item.getItemFromBlock(Blocks.WOODEN_SLAB),
             's', Items.STICK);
-
-        addShapedRecipe(INSTANCE.vsControlBlocks.crate,
+		addShapedRecipe(INSTANCE.vsControlBlocks.crate, 1,
             "SSS",
             "FfF",
             "SSS",
             'S', Item.getItemFromBlock(Blocks.WOODEN_SLAB),
             'F', INSTANCE.sailFabric,
             'f', Item.getItemFromBlock(INSTANCE.vsControlBlocks.frame));
-
-        addShapedRecipe(INSTANCE.vsControlBlocks.boilerCrate,
+		addShapedRecipe(INSTANCE.vsControlBlocks.boilerCrate, 1,
             "IEI",
-            "FCF",
+            "FHF",
             "BBB",
-            'C', Item.getItemFromBlock(INSTANCE.vsControlBlocks.crate),
-            'E', Items.EMPTY_BUCKET,
-            'B', Item.getItemFromBlock(Blocks.BRICKS),
+            'H', Item.getItemFromBlock(INSTANCE.vsControlBlocks.heavyDutyCrate),
+            'E', Items.BUCKET,
+            'B', Item.getItemFromBlock(Blocks.BRICK_BLOCK),
             'F', Item.getItemFromBlock(Blocks.FURNACE),
             'I', Items.IRON_INGOT);
-
-        addShapedRecipe(INSTANCE.vsControlBlocks.controlCrate,
+		addShapedRecipe(INSTANCE.vsControlBlocks.controlCrate, 1,
             "IDI",
             "DRD",
             "SFS",
             'F', Item.getItemFromBlock(INSTANCE.vsControlBlocks.frame),
-            'R', Items.REDSTONE_DUST,
+            'R', Items.REDSTONE,
             'S', Items.STICK,
             'I', Items.IRON_INGOT);
-
-        addShapedRecipe(INSTANCE.vsControlBlocks.pistonCrate,
-            "PPP",
-            "ICI",
-            "IRI",
+		addShapedRecipe(INSTANCE.vsControlBlocks.gearsCrate, 1,
+            "SGS",
+            "GCG",
+            "SGS",
             'C', Item.getItemFromBlock(INSTANCE.vsControlBlocks.crate),
+            'S', Items.STICK,
+            'G', INSTANCE.ironGear);
+		addShapedRecipe(INSTANCE.vsControlBlocks.heavyDutyCrate, 1,
+            "SSS",
+            "ICI",
+            "sss",
+            'C', Item.getItemFromBlock(INSTANCE.vsControlBlocks.crate),
+            'I', Items.IRON_INGOT,
+            'S', Item.getItemFromBlock(INSTANCE.vsControlBlocks.sandyBricks),
+            's', Item.getItemFromBlock(Blocks.WOODEN_SLAB));
+        addShapedRecipe(INSTANCE.vsControlBlocks.pistonCrate, 1,
+            "PPP",
+            "IHI",
+            "IRI",
+            'H', Item.getItemFromBlock(INSTANCE.vsControlBlocks.heavyDutyCrate),
             'P', Item.getItemFromBlock(Blocks.PISTON),
             'I', Items.IRON_INGOT,
-            'R', Items.REDSTONE_DUST);
-
-        addShapedRecipe(INSTANCE.vsControlBlocks.sailCrate,
+            'R', Items.REDSTONE);
+        addShapedRecipe(INSTANCE.vsControlBlocks.sailCrate, 1,
             "FPF",
             "FCF",
             " P ",
@@ -359,6 +391,8 @@ public class ValkyrienSkiesControl {
             ImplCapabilityLastRelay::new);
     }
 
+    // Recipe functions
+
     public void addShapedRecipe(ItemStack output, Object... params) {
 		ResourceLocation location = getNameForRecipe(output);
 		CraftingHelper.ShapedPrimer primer = CraftingHelper.parseShaped(params);
@@ -368,7 +402,6 @@ public class ValkyrienSkiesControl {
 		recipe.setRegistryName(location);
 		GameData.register_impl(recipe);
 	}
-
 	public void addShapedRecipe(Item output, int outputCount, Object... params) {
 		addShapedRecipe(new ItemStack(output, outputCount), params);
 	}
@@ -386,10 +419,32 @@ public class ValkyrienSkiesControl {
 			'P', Item.getItemFromBlock(Blocks.PISTON),
 			'I', Items.IRON_INGOT);
 	}
-
 	public void addEngineRecipe(Block output, Block type) {
 		addEngineRecipe(output, Item.getItemFromBlock(type));
 	}
+
+	public void addShapelessRecipe(ItemStack output, Object... input) {
+		ResourceLocation location = getNameForRecipe(output);
+		ShapelessRecipes recipe = new ShapelessRecipes(location.getNamespace(), output, buildInput(input));
+		recipe.setRegistryName(location);
+		GameData.register_impl(recipe);
+	}
+	public void addShapelessRecipe(Item output, int outputCount, Object... input) {
+		addShapelessRecipe(new ItemStack(output, outputCount), input);
+	}
+
+	public void addSmelting(ItemStack input, ItemStack output, float xp) {
+		FurnaceRecipes.instance().addSmeltingRecipe(input, output, xp);
+	}
+	public void addSmelting(Item input, int inputCount, Item output, int outputCount, float xp) {
+		addSmelting(new ItemStack(input, inputCount), new ItemStack(output, outputCount), xp);
+	}
+
+	public void addSmelting(Block input, int inputCount, Item output, int outputCount, float xp) {
+		addSmelting(new ItemStack(input, inputCount), new ItemStack(output, outputCount), xp);
+	}
+
+	// Utilities used by ^
 
 	// If a recipe already exists, increment number
 	/* eg:
@@ -405,5 +460,21 @@ public class ValkyrienSkiesControl {
 			recipeLoc = new ResourceLocation(MOD_ID, baseLoc.getPath() + "_" + index);
 		}
 		return recipeLoc;
+	}
+
+	private static NonNullList<Ingredient> buildInput(Object[] input) {
+		NonNullList<Ingredient> list = NonNullList.create();
+		for (Object obj : input) {
+			if (obj instanceof Ingredient) {
+				list.add((Ingredient) obj);
+			} else {
+				Ingredient ingredient = CraftingHelper.getIngredient(obj);
+				if (ingredient == null) {
+					ingredient = Ingredient.EMPTY;
+				}
+				list.add(ingredient);
+			}
+		}
+		return list;
 	}
 }

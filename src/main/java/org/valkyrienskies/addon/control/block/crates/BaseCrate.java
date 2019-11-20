@@ -17,22 +17,75 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.valkyrienskies.addon.control.block.multiblocks.EnumMultiblockType;
 import org.valkyrienskies.addon.control.block.multiblocks.ITileEntityMultiblock;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropeller;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudder;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressor;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEngine;
 import org.valkyrienskies.addon.control.util.BaseBlock;
 import org.valkyrienskies.mod.common.block.IBlockForceProvider;
+import org.valkyrienskies.mod.common.config.VSConfig;
+import org.valkyrienskies.mod.common.math.Vector;
+import org.valkyrienskies.mod.common.physics.management.physo.PhysicsObject;
 
-public abstract class BaseCrate extends BaseBlock implements ITileEntityProvider, IBlockForceProvider {
+public class BaseCrate extends BaseBlock implements ITileEntityProvider, IBlockForceProvider {
 	protected static final PropertyBool CONSTRUCTED = PropertyBool.create("constructed");
 	public EnumMultiblockType multiblockType = EnumMultiblockType.NONE;
 
-	public BaseCrate(String name, float hardness) {
+	protected BaseCrate(String name, float hardness) {
 		super(name, Material.WOOD, 0, true);
 		this.setHardness(hardness);
 	}
 
-	public BaseCrate(String name, Material mat, float hardness) {
+	protected BaseCrate(String name, Material mat, float hardness) {
 		super(name, mat, 0, true);
 		this.setHardness(hardness);
 	}
+
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		if (this.multiblockType == EnumMultiblockType.COMPRESSOR) {
+			return new TileEntityValkyriumCompressor(VSConfig.compressorMaxThrust);
+		} else if (this.multiblockType == EnumMultiblockType.ENGINE) {
+			return new TileEntityValkyriumEngine();
+		} else if (this.multiblockType == EnumMultiblockType.PROPELLER) {
+			return new TileEntityGiantPropeller();
+		} else if (this.multiblockType == EnumMultiblockType.RUDDER) {
+			return new TileEntityRudder();
+		}
+		System.out.println(">>>>>>>>>>>>>> inb4 NPE");
+		return null;
+	}
+
+	@Override
+    public boolean shouldLocalForceBeRotated(World world, BlockPos pos, IBlockState state,
+        double secondsToApply) {
+		if (this.multiblockType == EnumMultiblockType.NONE
+			|| this.multiblockType == EnumMultiblockType.COMPRESSOR) {
+			return false;
+		}
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Vector getBlockForceInShipSpace(World world, BlockPos pos, IBlockState state,
+        PhysicsObject physicsObject, double secondsToApply) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityValkyriumCompressor) {
+			return ((TileEntityValkyriumCompressor) tileEntity)
+				.getForceOutputUnoriented(secondsToApply, physicsObject);
+		} else if (tileEntity instanceof TileEntityGiantPropeller) {
+			return ((TileEntityGiantPropeller) tileEntity)
+				.getForceOutputUnoriented(secondsToApply, physicsObject);
+		} else if (tileEntity instanceof TileEntityRudder) {
+			Vector forceBeforeTimeScale = ((TileEntityRudder) tileEntity)
+				.calculateForceFromVelocity(physicsObject);
+			if (forceBeforeTimeScale != null && forceBeforeTimeScale.lengthSq() > 1) {
+				return forceBeforeTimeScale.getProduct(secondsToApply);
+			}
+		}
+        return null;
+    }
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {

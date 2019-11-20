@@ -50,7 +50,10 @@ public class VSConfig extends VSConfigTemplate {
     public static boolean doGravity = true;
 
     @Name("Compacted Valkyrium lift")
-    public static double compactedValkyriumLift = 200000;
+	public static double compactedValkyriumLift = 200000;
+	@Name("Valkyrium Compressor max thrust")
+	@Comment("In Newtons. Default is 1,300,000N.")
+	public static double compressorMaxThrust = 1300000;
 
     public static boolean doPhysicsBlocks = true;
 

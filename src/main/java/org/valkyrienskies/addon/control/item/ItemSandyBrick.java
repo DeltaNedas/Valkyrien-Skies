@@ -18,8 +18,8 @@ package org.valkyrienskies.addon.control.item;
 
 import org.valkyrienskies.addon.control.util.BaseItem;
 
-public class ItemIronGear extends BaseItem {
-	public ItemIronGear() {
-        super("iron_gear", true);
+public class ItemSandyBrick extends BaseItem {
+	public ItemSandyBrick() {
+        super("sandy_brick", true);
     }
 }

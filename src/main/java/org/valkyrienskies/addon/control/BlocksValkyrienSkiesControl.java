@@ -28,6 +28,7 @@ import org.valkyrienskies.addon.control.block.BlockNetworkDisplay;
 import org.valkyrienskies.addon.control.block.BlockNetworkRelay;
 import org.valkyrienskies.addon.control.block.BlockPassengerChair;
 import org.valkyrienskies.addon.control.block.BlockRotationAxle;
+import org.valkyrienskies.addon.control.block.BlockSandyBricks;
 import org.valkyrienskies.addon.control.block.BlockShipHelm;
 import org.valkyrienskies.addon.control.block.BlockShipWheel;
 import org.valkyrienskies.addon.control.block.BlockSpeedTelegraph;
@@ -36,6 +37,7 @@ import org.valkyrienskies.addon.control.block.crates.BlockFrame;
 import org.valkyrienskies.addon.control.block.crates.BlockBoilerCrate;
 import org.valkyrienskies.addon.control.block.crates.BlockControlCrate;
 import org.valkyrienskies.addon.control.block.crates.BlockGearsCrate;
+import org.valkyrienskies.addon.control.block.crates.BlockHeavyDutyCrate;
 import org.valkyrienskies.addon.control.block.crates.BlockPistonCrate;
 import org.valkyrienskies.addon.control.block.crates.BlockSailCrate;
 import org.valkyrienskies.addon.control.block.engine.BlockNormalEngine;
@@ -73,8 +75,11 @@ public class BlocksValkyrienSkiesControl {
 	public final Block boilerCrate;
 	public final Block controlCrate;
 	public final Block gearsCrate;
+	public final Block heavyDutyCrate;
 	public final Block pistonCrate;
 	public final Block sailCrate;
+
+	public final Block sandyBricks;
 
     public BlocksValkyrienSkiesControl() {
         basicEngine = new BlockNormalEngine("basic", Material.WOOD,
@@ -112,7 +117,10 @@ public class BlocksValkyrienSkiesControl {
 		boilerCrate = new BlockBoilerCrate();
 		controlCrate = new BlockControlCrate();
 		gearsCrate = new BlockGearsCrate();
+		heavyDutyCrate = new BlockHeavyDutyCrate();
 		pistonCrate = new BlockPistonCrate();
 		sailCrate = new BlockSailCrate();
+
+		sandyBricks = new BlockSandyBricks();
     }
 }

@@ -273,7 +273,8 @@ public class ValkyrienSkiesControl {
             "DRD",
             "SFS",
             'F', Item.getItemFromBlock(INSTANCE.vsControlBlocks.frame),
-            'R', Items.REDSTONE,
+            'R', Item.getItemFromBlock(INSTANCE.vsControlBlocks.networkRelay),
+            'D', Items.REDSTONE,
             'S', Items.STICK,
             'I', Items.IRON_INGOT);
 		addShapedRecipe(INSTANCE.vsControlBlocks.gearsCrate, 1,

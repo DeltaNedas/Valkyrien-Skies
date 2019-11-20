@@ -26,15 +26,28 @@ public class ValkyriumEngineMultiblockSchematic implements IMultiblockSchematic 
 
     @Override
     public void initializeMultiblockSchematic(String schematicID) {
-        Block enginePart = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.valkyriumEnginePart;
-        for (int x = -1; x <= 1; x++) {
-            for (int y = 0; y <= 1; y++) {
-                for (int z = -1; z <= 0; z++) {
-                    structureRelativeToCenter
-                        .add(new BlockPosBlockPair(new BlockPos(x, y, z), enginePart));
-                }
-            }
-        }
+		Block boilerCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.boilerCrate;
+		Block controlCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.controlCrate;
+		Block frame = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.frame;
+		Block gearsCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.gearsCrate;
+		Block pistonCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.pistonCrate;
+
+		// Layer 1
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(-1, 0, -1), frame));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, -1), frame));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, -1), gearsCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(-1, 0, 0), frame));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, 0), controlCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, 0), frame));
+
+		// Layer 2
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(-1, 0, -1), boilerCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, -1), pistonCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 1, -1), gearsCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(-1, 1, 0), frame));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 1, 0), pistonCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 1, 0), gearsCrate));
+
         this.torqueOutputPos = new BlockPos(1, 0, -1);
         this.torqueOutputDirection = new BlockPos(1, 0, 0);
         this.schematicID = schematicID;
@@ -53,16 +66,16 @@ public class ValkyriumEngineMultiblockSchematic implements IMultiblockSchematic 
     @Override
     public void applyMultiblockCreation(World world, BlockPos tilePos, BlockPos relativePos) {
         TileEntity tileEntity = world.getTileEntity(tilePos);
-        if (!(tileEntity instanceof TileEntityValkyriumEnginePart)) {
+        if (!(tileEntity instanceof TileEntityValkyriumEngine)) {
             throw new IllegalStateException();
         }
-        TileEntityValkyriumEnginePart enginePart = (TileEntityValkyriumEnginePart) tileEntity;
+        TileEntityValkyriumEngine enginePart = (TileEntityValkyriumEngine) tileEntity;
         enginePart.assembleMultiblock(this, relativePos);
     }
 
     @Override
     public String getSchematicPrefix() {
-        return "multiblock_valkyrium_engine";
+		return EnumMultiblockType.ENGINE.toString();
     }
 
     @Override

@@ -45,20 +45,21 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.GameData;
 import org.valkyrienskies.addon.control.block.multiblocks.GiantPropellerMultiblockSchematic;
-import org.valkyrienskies.addon.control.block.multiblocks.RudderAxleMultiblockSchematic;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropellerPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudderPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressorPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEnginePart;
+import org.valkyrienskies.addon.control.block.multiblocks.RudderMultiblockSchematic;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropeller;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudder;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressor;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEngine;
 import org.valkyrienskies.addon.control.block.multiblocks.ValkyriumCompressorMultiblockSchematic;
 import org.valkyrienskies.addon.control.block.multiblocks.ValkyriumEngineMultiblockSchematic;
 import org.valkyrienskies.addon.control.block.torque.TileEntityRotationAxle;
 import org.valkyrienskies.addon.control.capability.ICapabilityLastRelay;
 import org.valkyrienskies.addon.control.capability.ImplCapabilityLastRelay;
 import org.valkyrienskies.addon.control.capability.StorageLastRelay;
-import org.valkyrienskies.addon.control.item.ItemRelayWire;
+import org.valkyrienskies.addon.control.item.ItemBaseWire;
+import org.valkyrienskies.addon.control.item.ItemIronGear;
+import org.valkyrienskies.addon.control.item.ItemSailFabric;
 import org.valkyrienskies.addon.control.item.ItemVSWrench;
-import org.valkyrienskies.addon.control.item.ItemVanishingWire;
 import org.valkyrienskies.addon.control.network.MessagePlayerStoppedPiloting;
 import org.valkyrienskies.addon.control.network.MessagePlayerStoppedPilotingHandler;
 import org.valkyrienskies.addon.control.network.MessageStartPiloting;
@@ -77,7 +78,7 @@ import org.valkyrienskies.addon.control.tileentity.TileEntityLiftValve;
 import org.valkyrienskies.addon.control.tileentity.TileEntityNetworkDisplay;
 import org.valkyrienskies.addon.control.tileentity.TileEntityNetworkRelay;
 import org.valkyrienskies.addon.control.tileentity.TileEntityPassengerChair;
-import org.valkyrienskies.addon.control.tileentity.TileEntityPropellerEngine;
+import org.valkyrienskies.addon.control.tileentity.TileEntityLegacyEngine;
 import org.valkyrienskies.addon.control.tileentity.TileEntityShipHelm;
 import org.valkyrienskies.addon.control.tileentity.TileEntitySpeedTelegraph;
 import org.valkyrienskies.addon.world.ValkyrienSkiesWorld;
@@ -135,7 +136,7 @@ public class ValkyrienSkiesControl {
         MultiblockRegistry
         .registerAllPossibleSchematicVariants(ValkyriumCompressorMultiblockSchematic.class);
         MultiblockRegistry
-        .registerAllPossibleSchematicVariants(RudderAxleMultiblockSchematic.class);
+        .registerAllPossibleSchematicVariants(RudderMultiblockSchematic.class);
         MultiblockRegistry
         .registerAllPossibleSchematicVariants(GiantPropellerMultiblockSchematic.class);
     }
@@ -146,9 +147,11 @@ public class ValkyrienSkiesControl {
     }
 
     public void addItems() {
-		INSTANCE.relayWire = new ItemRelayWire();
-		INSTANCE.vanishingWire = new ItemVanishingWire();
+		INSTANCE.relayWire = new ItemBaseWire(EnumWireType.RELAY);
+		INSTANCE.vanishingWire = new ItemBaseWire(EnumWireType.VANISHING);
 		INSTANCE.vsWrench = new ItemVSWrench();
+		INSTANCE.sailFabric = new ItemSailFabric();
+		INSTANCE.ironGear = new ItemIronGear();
 	}
 
     public void registerRecipes() {
@@ -179,9 +182,15 @@ public class ValkyrienSkiesControl {
         // TODO: Code to check for copper and set relayWireIngot
 
         addShapedRecipe(INSTANCE.relayWire, 4, // 1 per copper/iron ingot
-            " I ",
+            " IS",
             "ISI",
-            " I ",
+            "SI ",
+            'I', relayWireIngot,
+            'S', Items.STICK);
+        addShapedRecipe(INSTANCE.relayWire, 4, // flipped
+            "SI ",
+            "ISI",
+            " IS",
             'I', relayWireIngot,
             'S', Items.STICK);
 		addShapedRecipe(INSTANCE.vanishingWire, 8,
@@ -190,28 +199,81 @@ public class ValkyrienSkiesControl {
             "WWW",
             'W', INSTANCE.relayWire,
             'V', ValkyrienSkiesWorld.INSTANCE.valkyriumCrystal);
+        addShapedRecipe(INSTANCE.sailFabric, 4,
+            "SWS",
+            "SWS",
+            "SWS",
+            'S', Items.STRING,
+            'W', Item.getItemFromBlock(Blocks.WOOL));
+        addShapedRecipe(INSTANCE.ironGear, 1,
+            " I ",
+            "ISI",
+            " I ",
+            'S', Items.STICK,
+            'I', Items.IRON_INGOT);
 
+		addShapedRecipe(INSTANCE.vsWrench, 1,
+			" I ",
+			" VI",
+			"I  ",
+			'I', Items.IRON_INGOT,
+			'V', ValkyrienSkiesWorld.INSTANCE.valkyriumCrystal);
         addShapedRecipe(INSTANCE.vsControlBlocks.compactedValkyrium, 1,
             "VVV",
             "VVV",
             "VVV",
             'V', ValkyrienSkiesWorld.INSTANCE.valkyriumCrystal);
 
-        addShapedRecipe(INSTANCE.vsControlBlocks.valkyriumEnginePart, 1,
-            "IVI",
-            "VFV",
-            "IVI",
-            'I', Items.IRON_INGOT,
-            'F', Item.getItemFromBlock(Blocks.FURNACE),
-            'V', ValkyrienSkiesWorld.INSTANCE.valkyriumCrystal);
+		addShapedRecipe(INSTANCE.vsControlBlocks.frame,
+            "sSs",
+            "s s",
+            "sSs",
+            'S', Item.getItemFromBlock(Blocks.WOODEN_SLAB),
+            's', Items.STICK);
 
-        addShapedRecipe(INSTANCE.vsControlBlocks.valkyriumCompressorPart, 1,
-            "GVG",
-            "VFV",
-            "GVG",
-            'G', Items.GOLD_INGOT,
-            'F', Item.getItemFromBlock(Blocks.PISTON),
-            'V', ValkyrienSkiesWorld.INSTANCE.valkyriumCrystal);
+        addShapedRecipe(INSTANCE.vsControlBlocks.crate,
+            "SSS",
+            "FfF",
+            "SSS",
+            'S', Item.getItemFromBlock(Blocks.WOODEN_SLAB),
+            'F', INSTANCE.sailFabric,
+            'f', Item.getItemFromBlock(INSTANCE.vsControlBlocks.frame));
+
+        addShapedRecipe(INSTANCE.vsControlBlocks.boilerCrate,
+            "IEI",
+            "FCF",
+            "BBB",
+            'C', Item.getItemFromBlock(INSTANCE.vsControlBlocks.crate),
+            'E', Items.EMPTY_BUCKET,
+            'B', Item.getItemFromBlock(Blocks.BRICKS),
+            'F', Item.getItemFromBlock(Blocks.FURNACE),
+            'I', Items.IRON_INGOT);
+
+        addShapedRecipe(INSTANCE.vsControlBlocks.controlCrate,
+            "IDI",
+            "DRD",
+            "SFS",
+            'F', Item.getItemFromBlock(INSTANCE.vsControlBlocks.frame),
+            'R', Items.REDSTONE_DUST,
+            'S', Items.STICK,
+            'I', Items.IRON_INGOT);
+
+        addShapedRecipe(INSTANCE.vsControlBlocks.pistonCrate,
+            "PPP",
+            "ICI",
+            "IRI",
+            'C', Item.getItemFromBlock(INSTANCE.vsControlBlocks.crate),
+            'P', Item.getItemFromBlock(Blocks.PISTON),
+            'I', Items.IRON_INGOT,
+            'R', Items.REDSTONE_DUST);
+
+        addShapedRecipe(INSTANCE.vsControlBlocks.sailCrate,
+            "FPF",
+            "FCF",
+            " P ",
+            'C', Item.getItemFromBlock(INSTANCE.vsControlBlocks.crate),
+            'P', Item.getItemFromBlock(Blocks.PLANKS),
+            'F', INSTANCE.sailFabric);
     }
 
     @Mod.EventHandler
@@ -239,40 +301,42 @@ public class ValkyrienSkiesControl {
     private void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityCaptainsChair.class,
             new ResourceLocation(MOD_ID, "tile_captains_chair"));
+        GameRegistry.registerTileEntity(TileEntityPassengerChair.class,
+            new ResourceLocation(MOD_ID, "tile_passenger_chair"));
+
         GameRegistry.registerTileEntity(TileEntityNetworkRelay.class,
             new ResourceLocation(MOD_ID, "tile_network_relay"));
+        GameRegistry.registerTileEntity(TileEntityNetworkDisplay.class,
+            new ResourceLocation(MOD_ID, "tile_network_display"));
+
         GameRegistry.registerTileEntity(TileEntityShipHelm.class,
             new ResourceLocation(MOD_ID, "tile_ship_helm"));
         GameRegistry.registerTileEntity(TileEntitySpeedTelegraph.class,
             new ResourceLocation(MOD_ID, "tile_speed_telegraph"));
-        GameRegistry.registerTileEntity(TileEntityPropellerEngine.class,
-            new ResourceLocation(MOD_ID, "tile_propeller_engine"));
         GameRegistry.registerTileEntity(TileEntityGyroscopeStabilizer.class,
             new ResourceLocation(MOD_ID, "tile_gyroscope_stabilizer"));
+        GameRegistry.registerTileEntity(TileEntityGyroscopeDampener.class,
+            new ResourceLocation(MOD_ID, "tile_gyroscope_dampener"));
         GameRegistry.registerTileEntity(TileEntityLiftValve.class,
             new ResourceLocation(MOD_ID, "tile_lift_valve"));
-        GameRegistry.registerTileEntity(TileEntityNetworkDisplay.class,
-            new ResourceLocation(MOD_ID, "tile_network_display"));
         GameRegistry.registerTileEntity(TileEntityLiftLever.class,
             new ResourceLocation(MOD_ID, "tile_lift_lever"));
 
-        GameRegistry.registerTileEntity(TileEntityGyroscopeDampener.class,
-            new ResourceLocation(MOD_ID, "tile_gyroscope_dampener"));
-        GameRegistry.registerTileEntity(TileEntityValkyriumEnginePart.class,
-            new ResourceLocation(MOD_ID, "tile_valkyrium_engine_part"));
+        GameRegistry.registerTileEntity(TileEntityLegacyEngine.class,
+            new ResourceLocation(MOD_ID, "tile_legacy_engine"));
+        GameRegistry.registerTileEntity(TileEntityValkyriumEngine.class,
+            new ResourceLocation(MOD_ID, "tile_valkyrium_engine"));
+        GameRegistry.registerTileEntity(TileEntityValkyriumCompressor.class,
+            new ResourceLocation(MOD_ID, "tile_valkyrium_compressor"));
+        GameRegistry.registerTileEntity(TileEntityRudder.class,
+            new ResourceLocation(MOD_ID, "tile_rudder"));
+        GameRegistry.registerTileEntity(TileEntityGiantPropeller.class,
+            new ResourceLocation(MOD_ID, "tile_giant_propeller"));
         GameRegistry.registerTileEntity(TileEntityGearbox.class,
             new ResourceLocation(MOD_ID, "tile_gearbox"));
-        GameRegistry.registerTileEntity(TileEntityValkyriumCompressorPart.class,
-            new ResourceLocation(MOD_ID, "tile_valkyrium_compressor_part"));
-        GameRegistry.registerTileEntity(TileEntityRudderPart.class,
-            new ResourceLocation(MOD_ID, "tile_rudder_part"));
-        GameRegistry.registerTileEntity(TileEntityGiantPropellerPart.class,
-            new ResourceLocation(MOD_ID, "tile_giant_propeller_part"));
         GameRegistry.registerTileEntity(TileEntityRotationAxle.class,
             new ResourceLocation(MOD_ID, "tile_rotation_axle"));
 
-        GameRegistry.registerTileEntity(TileEntityPassengerChair.class,
-            new ResourceLocation(MOD_ID, "tile_passenger_chair"));
     }
 
     private void registerNetworks() {

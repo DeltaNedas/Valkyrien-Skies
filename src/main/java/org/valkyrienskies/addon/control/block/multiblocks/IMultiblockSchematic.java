@@ -1,11 +1,14 @@
 package org.valkyrienskies.addon.control.block.multiblocks;
 
+import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.valkyrienskies.addon.control.block.crates.BaseCrate;
 
 public interface IMultiblockSchematic {
 
@@ -53,44 +56,52 @@ public interface IMultiblockSchematic {
     /**
      * Returns true if the multiblock was successfully created.
      */
-    default boolean attemptToCreateMultiblock(World world, BlockPos pos) {
+    default boolean attemptToCreateMultiblock(World world, BlockPos pos, EnumMultiblockType type) {
         if (getStructureRelativeToCenter().size() == 0) {
             throw new IllegalStateException("No structure info found in the multiblock schematic!");
         }
+        if (type == EnumMultiblockType.NONE) {
+			throw new IllegalArgumentException("Multiblock type must not be none!");
+		}
 
-        boolean buildSuccessful = true;
+        List<BlockPos> constructedBlocks = new ArrayList<>();
+
         for (BlockPosBlockPair pair : getStructureRelativeToCenter()) {
             BlockPos realPos = pos.add(pair.getPos());
             IBlockState state = world.getBlockState(realPos);
-            if (state.getBlock() != pair.getBlock()) {
-                // This rotation didn't work
-                buildSuccessful = false;
-                break;
-            } else {
-                TileEntity tile = world.getTileEntity(realPos);
-                if (tile instanceof ITileEntityMultiblockPart) {
-                    ITileEntityMultiblockPart multiblockPart = (ITileEntityMultiblockPart) tile;
-                    if (multiblockPart.isPartOfAssembledMultiblock()) {
-                        // If its already a part of a multiblock then do not allow this to assemble.
-                        buildSuccessful = false;
-                        break;
-                    }
-                } else {
-                    buildSuccessful = false;
-                    break;
-                }
+			Block block = state.getBlock();
+            if (block != pair.getBlock()) {
+				// This rotation didn't work
+				return false;
             }
+
+            if (block instanceof BaseCrate) {
+				if (((BaseCrate) block).multiblockType != EnumMultiblockType.NONE) {
+					return false;
+				}
+			}
+
+			TileEntity tile = world.getTileEntity(realPos);
+            if (tile instanceof ITileEntityMultiblock) {
+				ITileEntityMultiblock multiblockPart = (ITileEntityMultiblock) tile;
+				if (multiblockPart.isPartOfAssembledMultiblock()) {
+					// If its already a part of a multiblock then do not allow this to assemble.
+					return false;
+				}
+			} else {
+				return false;
+			}
         }
 
-        if (buildSuccessful) {
-            for (BlockPosBlockPair pair : getStructureRelativeToCenter()) {
-                BlockPos realPos = pos.add(pair.getPos());
-                applyMultiblockCreation(world, realPos, pair.getPos());
-            }
-            return true;
-        }
-
-        return false;
+		for (BlockPosBlockPair pair : getStructureRelativeToCenter()) {
+			BlockPos realPos = pos.add(pair.getPos());
+			Block block = world.getBlockState(realPos).getBlock();
+			if (block instanceof BaseCrate) {
+				((BaseCrate) block).multiblockType = type; // Prevent it from being reconstructed.
+			}
+			applyMultiblockCreation(world, realPos, pair.getPos());
+		}
+		return true;
     }
 
     void applyMultiblockCreation(World world, BlockPos tilePos, BlockPos relativePos);

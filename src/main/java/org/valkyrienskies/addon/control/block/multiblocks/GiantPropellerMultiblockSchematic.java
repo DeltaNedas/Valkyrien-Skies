@@ -26,7 +26,9 @@ public class GiantPropellerMultiblockSchematic implements IMultiblockSchematic {
 
     @Override
     public void initializeMultiblockSchematic(String schematicID) {
-        Block enginePart = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.giantPropellerPart;
+        Block gearsCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.gearsCrate;
+		Block sailCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.sailCrate;
+		Block frame = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.frame;
 
         Vec3i perpAxisOne = null;
         Vec3i perpAxisTwo = null;
@@ -46,13 +48,25 @@ public class GiantPropellerMultiblockSchematic implements IMultiblockSchematic {
         }
 
         for (int x = -propellerRadius; x <= propellerRadius; x++) {
+			int horizX = perpAxisOne.getX() * x;
+			int horizY = perpAxisOne.getY() * x;
+			int horizZ = perpAxisOne.getZ() * x;
             for (int y = -propellerRadius; y <= propellerRadius; y++) {
-                int relativeX = (perpAxisOne.getX() * x) + (perpAxisTwo.getX() * y);
-                int relativeY = (perpAxisOne.getY() * x) + (perpAxisTwo.getY() * y);
-                int relativeZ = (perpAxisOne.getZ() * x) + (perpAxisTwo.getZ() * y);
-                structureRelativeToCenter.add(
-                    new BlockPosBlockPair(new BlockPos(relativeX, relativeY, relativeZ),
-                        enginePart));
+				int relativeX = horizX + perpAxisTwo.getX() * y;
+				int relativeY = horizY + perpAxisTwo.getY() * y;
+				int relativeZ = horizZ + perpAxisTwo.getZ() * y;
+
+				// Create cross shape of frames with gears crate centre
+				// Was much simpler than I imagined...
+				Block select = sailCrate;
+				if (x == 0 && y == 0) {
+					select = gearsCrate;
+				} else if (x == 0 || y == 0) {
+					select = frame;
+				}
+                structureRelativeToCenter.add(new BlockPosBlockPair(
+						new BlockPos(relativeX, relativeY, relativeZ),
+                        select));
             }
         }
         this.schematicID = schematicID;
@@ -65,7 +79,7 @@ public class GiantPropellerMultiblockSchematic implements IMultiblockSchematic {
 
     @Override
     public String getSchematicPrefix() {
-        return "multiblock_giant_propeller";
+		return EnumMultiblockType.PROPELLER.toString();
     }
 
     @Override
@@ -76,10 +90,10 @@ public class GiantPropellerMultiblockSchematic implements IMultiblockSchematic {
     @Override
     public void applyMultiblockCreation(World world, BlockPos tilePos, BlockPos relativePos) {
         TileEntity tileEntity = world.getTileEntity(tilePos);
-        if (!(tileEntity instanceof TileEntityGiantPropellerPart)) {
+        if (!(tileEntity instanceof TileEntityGiantPropeller)) {
             throw new IllegalStateException();
         }
-        TileEntityGiantPropellerPart enginePart = (TileEntityGiantPropellerPart) tileEntity;
+        TileEntityGiantPropeller enginePart = (TileEntityGiantPropeller) tileEntity;
         enginePart.assembleMultiblock(this, relativePos);
     }
 

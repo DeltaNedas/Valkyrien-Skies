@@ -22,16 +22,23 @@ public class ValkyriumCompressorMultiblockSchematic implements IMultiblockSchema
 
     @Override
     public void initializeMultiblockSchematic(String schematicID) {
-        Block enginePart = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.valkyriumCompressorPart;
-        for (int x = 0; x <= 1; x++) {
-            for (int y = 0; y <= 1; y++) {
-                for (int z = 0; z <= 1; z++) {
-                    structureRelativeToCenter
-                        .add(new BlockPosBlockPair(new BlockPos(x, y, z), enginePart));
-                }
-            }
-        }
-        this.schematicID = schematicID;
+		Block boilerCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.boilerCrate;
+		Block controlCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.controlCrate;
+		Block frame = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.frame;
+		Block gearsCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.gearsCrate;
+        Block pistonCrate = ValkyrienSkiesControl.INSTANCE.vsControlBlocks.pistonCrate;
+
+		// Layer 1
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, 0), controlCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, 0), frame));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, 1), frame));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, 1), frame));
+
+		// Layer 2
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, 0), gearsCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, 0), boilerCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, 1), pistonCrate));
+		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, 1), pistonCrate));
     }
 
     @Override
@@ -47,16 +54,16 @@ public class ValkyriumCompressorMultiblockSchematic implements IMultiblockSchema
     @Override
     public void applyMultiblockCreation(World world, BlockPos tilePos, BlockPos relativePos) {
         TileEntity tileEntity = world.getTileEntity(tilePos);
-        if (!(tileEntity instanceof TileEntityValkyriumCompressorPart)) {
+        if (!(tileEntity instanceof TileEntityValkyriumCompressor)) {
             throw new IllegalStateException();
         }
-        TileEntityValkyriumCompressorPart enginePart = (TileEntityValkyriumCompressorPart) tileEntity;
-        enginePart.assembleMultiblock(this, relativePos);
+        TileEntityValkyriumCompressor compressorPart = (TileEntityValkyriumCompressor) tileEntity;
+		compressorPart.assembleMultiblock(this, relativePos);
     }
 
     @Override
     public String getSchematicPrefix() {
-        return "multiblock_valkyrium_compressor";
+		return EnumMultiblockType.COMPRESSOR.toString();
     }
 
     @Override

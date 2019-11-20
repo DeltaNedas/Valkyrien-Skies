@@ -18,12 +18,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import org.valkyrienskies.addon.control.block.multiblocks.GiantPropellerMultiblockSchematic;
 import org.valkyrienskies.addon.control.block.multiblocks.IMultiblockSchematic;
-import org.valkyrienskies.addon.control.block.multiblocks.ITileEntityMultiblockPart;
-import org.valkyrienskies.addon.control.block.multiblocks.RudderAxleMultiblockSchematic;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropellerPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudderPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressorPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEnginePart;
+import org.valkyrienskies.addon.control.block.multiblocks.ITileEntityMultiblock;
+import org.valkyrienskies.addon.control.block.multiblocks.RudderMultiblockSchematic;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropeller;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudder;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressor;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEngine;
 import org.valkyrienskies.addon.control.tileentity.TileEntityGearbox;
 import org.valkyrienskies.addon.control.util.BaseItem;
 import org.valkyrienskies.mod.common.config.VSConfig;
@@ -68,8 +68,8 @@ public class ItemVSWrench extends BaseItem {
         TileEntity blockTile = worldIn.getTileEntity(pos);
         boolean shouldConstruct = this.mode == EnumWrenchMode.CONSTRUCT || VSConfig.wrenchModeless;
         boolean shouldDeconstruct = this.mode == EnumWrenchMode.DECONSTRUCT || VSConfig.wrenchModeless;
-        if (blockTile instanceof ITileEntityMultiblockPart) {
-            ITileEntityMultiblockPart part = (ITileEntityMultiblockPart) blockTile;
+        if (blockTile instanceof ITileEntityMultiblock) {
+            ITileEntityMultiblock part = (ITileEntityMultiblock) blockTile;
             shouldConstruct = shouldConstruct && !part.isPartOfAssembledMultiblock();
             shouldDeconstruct = shouldDeconstruct && part.isPartOfAssembledMultiblock();
         } else if (blockTile instanceof TileEntityGearbox) {
@@ -78,8 +78,8 @@ public class ItemVSWrench extends BaseItem {
             return EnumActionResult.PASS;
         }
         if (shouldConstruct) {
-            if (blockTile instanceof ITileEntityMultiblockPart) {
-                if (((ITileEntityMultiblockPart) blockTile).attemptToAssembleMultiblock(worldIn, pos, facing)) {
+            if (blockTile instanceof ITileEntityMultiblock) {
+                if (((ITileEntityMultiblock) blockTile).attemptToAssembleMultiblock(worldIn, pos, facing)) {
                     return EnumActionResult.SUCCESS;
                 }
             } else if (blockTile instanceof TileEntityGearbox) {
@@ -87,7 +87,7 @@ public class ItemVSWrench extends BaseItem {
                     player.isSneaking() ? facing.getOpposite() : facing);
             }
         } else if (shouldDeconstruct) {
-            ((ITileEntityMultiblockPart) blockTile).disassembleMultiblock();
+            ((ITileEntityMultiblock) blockTile).disassembleMultiblock();
             return EnumActionResult.SUCCESS;
         }
 

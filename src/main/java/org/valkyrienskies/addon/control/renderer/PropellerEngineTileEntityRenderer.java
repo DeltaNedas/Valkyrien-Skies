@@ -26,14 +26,14 @@ import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 import org.valkyrienskies.addon.control.ValkyrienSkiesControl;
 import org.valkyrienskies.addon.control.block.engine.BlockAirshipEngine;
-import org.valkyrienskies.addon.control.tileentity.TileEntityPropellerEngine;
+import org.valkyrienskies.addon.control.tileentity.TileEntityLegacyEngine;
 import org.valkyrienskies.mod.client.render.FastBlockModelRenderer;
 
 public class PropellerEngineTileEntityRenderer extends
-    TileEntitySpecialRenderer<TileEntityPropellerEngine> {
+    TileEntitySpecialRenderer<TileEntityLegacyEngine> {
 
     @Override
-    public void render(TileEntityPropellerEngine tileentity, double x, double y, double z,
+    public void render(TileEntityLegacyEngine tileentity, double x, double y, double z,
         float partialTick,
         int destroyStage, float alpha) {
         IBlockState state = tileentity.getWorld().getBlockState(tileentity.getPos());

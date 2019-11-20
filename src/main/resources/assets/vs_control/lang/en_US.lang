@@ -9,6 +9,11 @@ message.vs_control.error_relay_wire_length=The wire is too short to connect thes
 item.vanishing_wire.name=Vanishing Wire
 tooltip.vs_control.vanishing_wire=Works like Relay Wire, but it's invisible when not held.
 
+item.sail_fabric.name=Sail Fabric
+tooltip.vs_control.sail_fabric=A durable, light sheet of fabric suitable for a ship's rudder or propeller.
+
+item.iron_gear.name=Iron Gear
+
 item.vs_wrench.name=VS Wrench
 tooltip.vs_control.wrench_usage=A VS Wrench is needed to construct this.
 tooltip.vs_control.wrench_modes=Shift + Right-Click to change modes.
@@ -57,19 +62,30 @@ tile.network_relay.name=Network Relay
 tooltip.vs_control.network_relay=Lets you connect %d components, including relays, to this using Relay Wire or Vanishing Wire.
 
 
-## Multi-Block parts
-tile.valkyrium_compressor_part.name=Valkyrium Compressor Part
-tooltip.vs_control.valkyrium_compressor_part_1=Part of a 2x2x2 multiblock, the Valkyrium Compressor.
-tooltip.vs_control.valkyrium_compressor_part_2=This multiblock's purpose is to provide a lot of thrust up or down.
+## Crates
+tile.frame.name=Frame
+tooltip.vs_control.frame=A strong foundation for most multiblock structures.
 
-tile.rudder_part.name=Rudder Part
-tooltip.vs_control.rudder_part=Changes the direction of the thrust from propellers; controlled by the Ship Helm.
+tile.crate.name=Empty Crate
+tooltip.vs_control.crate=A durable crate with a sheet of fabric around it.\nUsed to craft other crates.
 
-tile.giant_propeller_part.name=Giant Propeller Part
-tooltip.vs_control.giant_propeller_part=3x3 to 7x7 multiblock that converts torque to thrust.
+tile.boiler_crate.name=Boiler Crate
+tooltip.vs_control.boiler_crate=Contains the machinery needed to boil most liquids.
 
-tile.valkyrium_engine_part.name=Valkyrium Engine Part
-tooltip.vs_control.valkyrium_engine_part=Part of a multiblock that generates torque to power propellers.
+tile.control_crate.name=Control Crate
+tooltip.vs_control.control_crate=Contains circuitry required for network I/O.\nUsed in most multiblocks.
+
+tile.gear_crate.name=Gear Crate
+tooltip.vs_control.gear_crate=Some gears meshed together, used in larger multiblocks.
+
+tile.heavy_duty_crate.name=Heavy Duty Crate
+tooltip.vs_control.heavy_duty_crate=A much stronger crate capable of bearing greater loads.
+
+tile.piston_crate.name=Piston Crate
+tooltip.vs_control.piston_crate=Turns gas expansion into axle rotation.
+
+tile.sail_crate.name=Sail Crate
+tooltip.vs_control.sail_crate=Contains sails that can hold up against the strongest winds.
 
 
 ## Legacy engines
@@ -91,7 +107,6 @@ tooltip.vs_control.gyroscope_stabilizer=This block passively provides a torque t
 
 tile.gyroscope_dampener.name=Ship Gyroscope Dampener
 tooltip.vs_control.gyroscope_dampener=This block passively provides a torque to prevent the ship from rocking.
-
 
 
 ## Not Yet Implemented

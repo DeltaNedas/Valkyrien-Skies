@@ -31,12 +31,15 @@ import org.valkyrienskies.addon.control.block.BlockRotationAxle;
 import org.valkyrienskies.addon.control.block.BlockShipHelm;
 import org.valkyrienskies.addon.control.block.BlockShipWheel;
 import org.valkyrienskies.addon.control.block.BlockSpeedTelegraph;
+import org.valkyrienskies.addon.control.block.crates.BlockCrate;
+import org.valkyrienskies.addon.control.block.crates.BlockFrame;
+import org.valkyrienskies.addon.control.block.crates.BlockBoilerCrate;
+import org.valkyrienskies.addon.control.block.crates.BlockControlCrate;
+import org.valkyrienskies.addon.control.block.crates.BlockGearsCrate;
+import org.valkyrienskies.addon.control.block.crates.BlockPistonCrate;
+import org.valkyrienskies.addon.control.block.crates.BlockSailCrate;
 import org.valkyrienskies.addon.control.block.engine.BlockNormalEngine;
 import org.valkyrienskies.addon.control.block.engine.BlockRedstoneEngine;
-import org.valkyrienskies.addon.control.block.multiblocks.BlockGiantPropellerPart;
-import org.valkyrienskies.addon.control.block.multiblocks.BlockRudderPart;
-import org.valkyrienskies.addon.control.block.multiblocks.BlockValkyriumCompressorPart;
-import org.valkyrienskies.addon.control.block.multiblocks.BlockValkyriumEnginePart;
 import org.valkyrienskies.mod.common.config.VSConfig;
 
 import net.minecraft.block.Block;
@@ -56,18 +59,22 @@ public class BlocksValkyrienSkiesControl {
     public final Block shipWheel;
     public final Block speedTelegraph;
     public final Block dummyTelegraph;
-    public final Block networkRelay;
-    public final Block gyroscopeStabilizer;
+	public final Block networkRelay;
+	public final Block networkDisplay;
+	public final Block gyroscopeStabilizer;
+	public final Block gyroscopeDampener;
     public final Block liftValve;
-    public final Block networkDisplay;
     public final Block liftLever;
-    public final Block valkyriumCompressorPart;
-    public final Block gyroscopeDampener;
-    public final Block valkyriumEnginePart;
     public final Block gearbox;
-    public final Block rudderPart;
-    public final Block giantPropellerPart;
     public final Block rotationAxle;
+
+	public final Block crate;
+	public final Block frame;
+	public final Block boilerCrate;
+	public final Block controlCrate;
+	public final Block gearsCrate;
+	public final Block pistonCrate;
+	public final Block sailCrate;
 
     public BlocksValkyrienSkiesControl() {
         basicEngine = new BlockNormalEngine("basic", Material.WOOD,
@@ -97,11 +104,15 @@ public class BlocksValkyrienSkiesControl {
         liftValve = new BlockLiftValve();
         liftLever = new BlockLiftLever();
 
-        valkyriumCompressorPart = new BlockValkyriumCompressorPart();
-        valkyriumEnginePart = new BlockValkyriumEnginePart();
-        rudderPart = new BlockRudderPart();
-        giantPropellerPart = new BlockGiantPropellerPart();
         rotationAxle = new BlockRotationAxle();
         gearbox = new BlockGearbox();
+
+		crate = new BlockCrate();
+		frame = new BlockFrame();
+		boilerCrate = new BlockBoilerCrate();
+		controlCrate = new BlockControlCrate();
+		gearsCrate = new BlockGearsCrate();
+		pistonCrate = new BlockPistonCrate();
+		sailCrate = new BlockSailCrate();
     }
 }

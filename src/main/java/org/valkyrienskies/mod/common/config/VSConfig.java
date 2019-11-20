@@ -100,6 +100,10 @@ public class VSConfig extends VSConfigTemplate {
     @Comment("How long, in metres, a single relay wire can extend. Default is 8m.")
     public static double relayWireLength = 8D;
 
+	@Name("Max rudder length")
+	@RangeInt(min = 2)
+	public static int maxRudderLength = 6;
+
     @Name("Engine Power")
     @ShortName("enginePower")
     public static final EnginePower ENGINE_POWER = new EnginePower();

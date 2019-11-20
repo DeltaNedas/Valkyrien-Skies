@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressorPart;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressor;
 import org.valkyrienskies.addon.control.nodenetwork.VSNode_TileEntity;
 import org.valkyrienskies.addon.control.piloting.ControllerInputType;
 import org.valkyrienskies.addon.control.piloting.PilotControlsMessage;
@@ -114,10 +114,10 @@ public class TileEntityLiftLever extends TileEntityPilotableImpl {
                 for (GraphObject object : thisNode.getGraph().getObjects()) {
                     VSNode_TileEntity otherNode = (VSNode_TileEntity) object;
                     TileEntity tile = otherNode.getParentTile();
-                    if (tile instanceof TileEntityValkyriumCompressorPart) {
-                        BlockPos masterPos = ((TileEntityValkyriumCompressorPart) tile)
+                    if (tile instanceof TileEntityValkyriumCompressor) {
+                        BlockPos masterPos = ((TileEntityValkyriumCompressor) tile)
                             .getMultiblockOrigin();
-                        TileEntityValkyriumCompressorPart masterTile = (TileEntityValkyriumCompressorPart) tile
+                        TileEntityValkyriumCompressor masterTile = (TileEntityValkyriumCompressor) tile
                             .getWorld().getTileEntity(masterPos);
                         // This is a transient problem that only occurs during world loading.
                         if (masterTile != null) {

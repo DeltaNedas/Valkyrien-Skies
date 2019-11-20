@@ -16,7 +16,7 @@
 
 package org.valkyrienskies.addon.control.block.engine;
 
-import org.valkyrienskies.addon.control.tileentity.TileEntityPropellerEngine;
+import org.valkyrienskies.addon.control.tileentity.TileEntityLegacyEngine;
 import org.valkyrienskies.addon.control.util.BaseBlock;
 import org.valkyrienskies.mod.common.block.IBlockForceProvider;
 import org.valkyrienskies.mod.common.math.Vector;
@@ -85,13 +85,13 @@ public abstract class BlockAirshipEngine extends BaseBlock implements IBlockForc
         }
 
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileEntityPropellerEngine) {
+        if (tileEntity instanceof TileEntityLegacyEngine) {
             //Just set the Thrust to be the maximum
-            ((TileEntityPropellerEngine) tileEntity)
+            ((TileEntityLegacyEngine) tileEntity)
                 .setThrustMultiplierGoal(this.getEnginePower(world, pos, state, physicsObject));
-            ((TileEntityPropellerEngine) tileEntity).updateTicksSinceLastRecievedSignal();
-            ((TileEntityPropellerEngine) tileEntity).setThrustMultiplierGoal(1D);
-            return ((TileEntityPropellerEngine) tileEntity)
+            ((TileEntityLegacyEngine) tileEntity).updateTicksSinceLastRecievedSignal();
+            ((TileEntityLegacyEngine) tileEntity).setThrustMultiplierGoal(1D);
+            return ((TileEntityLegacyEngine) tileEntity)
                 .getForceOutputUnoriented(secondsToApply, physicsObject);
         }
 
@@ -130,7 +130,7 @@ public abstract class BlockAirshipEngine extends BaseBlock implements IBlockForc
 
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         IBlockState state = getStateFromMeta(meta);
-        return new TileEntityPropellerEngine(new Vector(state.getValue(FACING)), true, enginePower);
+        return new TileEntityLegacyEngine(new Vector(state.getValue(FACING)), true, enginePower);
     }
 
     public void setEnginePower(double power) {

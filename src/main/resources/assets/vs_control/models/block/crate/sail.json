@@ -1,0 +1,6 @@
+{
+    "parent": "vs_control:block/crate/empty",
+    "textures": {
+        "side": "vs_control:blocks/crate/sail"
+    }
+}

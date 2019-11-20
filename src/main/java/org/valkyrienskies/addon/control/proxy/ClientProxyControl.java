@@ -28,26 +28,26 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLStateEvent;
 import org.valkyrienskies.addon.control.ControlEventsClient;
 import org.valkyrienskies.addon.control.ValkyrienSkiesControl;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropellerPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudderPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressorPart;
-import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEnginePart;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropeller;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudder;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressor;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEngine;
 import org.valkyrienskies.addon.control.block.torque.TileEntityRotationAxle;
 import org.valkyrienskies.addon.control.renderer.BasicNodeTileEntityRenderer;
 import org.valkyrienskies.addon.control.renderer.GearboxTileEntityRenderer;
-import org.valkyrienskies.addon.control.renderer.GiantPropellerPartTileEntityRenderer;
+import org.valkyrienskies.addon.control.renderer.GiantPropellerTileEntityRenderer;
 import org.valkyrienskies.addon.control.renderer.LiftLeverTileEntityRenderer;
 import org.valkyrienskies.addon.control.renderer.PropellerEngineTileEntityRenderer;
 import org.valkyrienskies.addon.control.renderer.RotationAxleTileEntityRenderer;
-import org.valkyrienskies.addon.control.renderer.RudderPartTileEntityRenderer;
+import org.valkyrienskies.addon.control.renderer.RudderTileEntityRenderer;
 import org.valkyrienskies.addon.control.renderer.ShipHelmTileEntityRenderer;
 import org.valkyrienskies.addon.control.renderer.SpeedTelegraphTileEntityRenderer;
-import org.valkyrienskies.addon.control.renderer.ValkyriumCompressorPartTileEntityRenderer;
-import org.valkyrienskies.addon.control.renderer.ValkyriumEnginePartTileEntityRenderer;
+import org.valkyrienskies.addon.control.renderer.ValkyriumCompressorTileEntityRenderer;
+import org.valkyrienskies.addon.control.renderer.ValkyriumEngineTileEntityRenderer;
 import org.valkyrienskies.addon.control.tileentity.TileEntityGearbox;
 import org.valkyrienskies.addon.control.tileentity.TileEntityLiftLever;
 import org.valkyrienskies.addon.control.tileentity.TileEntityNetworkRelay;
-import org.valkyrienskies.addon.control.tileentity.TileEntityPropellerEngine;
+import org.valkyrienskies.addon.control.tileentity.TileEntityLegacyEngine;
 import org.valkyrienskies.addon.control.tileentity.TileEntityShipHelm;
 import org.valkyrienskies.addon.control.tileentity.TileEntitySpeedTelegraph;
 import org.valkyrienskies.mod.client.render.GibsAnimationRegistry;
@@ -55,63 +55,6 @@ import org.valkyrienskies.mod.client.render.GibsModelRegistry;
 
 @SuppressWarnings("unused")
 public class ClientProxyControl extends CommonProxyControl {
-
-    private static void registerBlockItem(Block toRegister) {
-        Item item = Item.getItemFromBlock(toRegister);
-        Minecraft.getMinecraft()
-            .getRenderItem()
-            .getItemModelMesher()
-            .register(item, 0, new ModelResourceLocation(
-                ValkyrienSkiesControl.MOD_ID + ":" + item.getTranslationKey()
-                    .substring(5), "inventory"));
-    }
-
-    private static void registerItemModel(Item toRegister) {
-        RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(
-            ValkyrienSkiesControl.MOD_ID + ":" + toRegister.getTranslationKey()
-                .substring(5), "inventory");
-        renderItem.getItemModelMesher()
-            .register(toRegister, 0, modelResourceLocation);
-    }
-
-    private static void registerBlockItemModels() {
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.basicEngine);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.advancedEngine);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.eliteEngine);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.ultimateEngine);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.redstoneEngine);
-
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.captainsChair);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.passengerChair);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.shipHelm);
-
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.speedTelegraph);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.compactedValkyrium);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.networkRelay);
-
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.gyroscopeStabilizer);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.liftValve);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.networkDisplay);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.liftLever);
-
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.valkyriumCompressorPart);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.gyroscopeDampener);
-
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.valkyriumEnginePart);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.gearbox);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.rudderPart);
-
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.giantPropellerPart);
-        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.rotationAxle);
-    }
-
-    private static void registerItemModels() {
-        registerItemModel(ValkyrienSkiesControl.INSTANCE.relayWire);
-        registerItemModel(ValkyrienSkiesControl.INSTANCE.vanishingWire);
-        registerItemModel(ValkyrienSkiesControl.INSTANCE.vsWrench);
-    }
-
     private static void registerTileEntityRenderers() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNetworkRelay.class,
             new BasicNodeTileEntityRenderer());
@@ -119,20 +62,20 @@ public class ClientProxyControl extends CommonProxyControl {
             new ShipHelmTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySpeedTelegraph.class,
             new SpeedTelegraphTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPropellerEngine.class,
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLegacyEngine.class,
             new PropellerEngineTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValkyriumEnginePart.class,
-            new ValkyriumEnginePartTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValkyriumEngine.class,
+            new ValkyriumEngineTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGearbox.class,
             new GearboxTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLiftLever.class,
             new LiftLeverTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValkyriumCompressorPart.class,
-            new ValkyriumCompressorPartTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRudderPart.class,
-            new RudderPartTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGiantPropellerPart.class,
-            new GiantPropellerPartTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValkyriumCompressor.class,
+            new ValkyriumCompressorTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRudder.class,
+            new RudderTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGiantPropeller.class,
+            new GiantPropellerTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRotationAxle.class,
             new RotationAxleTileEntityRenderer());
     }
@@ -230,8 +173,6 @@ public class ClientProxyControl extends CommonProxyControl {
     @Override
     public void postInit(FMLStateEvent event) {
         super.postInit(event);
-        registerBlockItemModels();
-        registerItemModels();
         registerTileEntityRenderers();
     }
 

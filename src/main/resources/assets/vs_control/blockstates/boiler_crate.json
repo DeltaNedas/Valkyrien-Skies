@@ -1,0 +1,23 @@
+{
+	"forge_marker": 1,
+	"variants": {
+		"default": {
+			"model": "vs_control:empty"
+		},
+		"normal": {
+			"model": "vs_control:empty"
+		},
+		"constructed=false": {
+			"model": "vs_control:crate/boiler"
+		},
+		"constructed=true": {
+			"model": "vs_control:empty"
+		},
+		"inventory": [
+			{
+				"model": "vs_control:crate/boiler",
+				"transform": "forge:default-block"
+			}
+		]
+	}
+}

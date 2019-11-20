@@ -1,0 +1,9 @@
+{
+	"parent": "vs_control:block/crate/empty",
+	"textures": {
+        "side": "vs_control:blocks/crate/heavy_duty",
+        "bottom": "vs_control:blocks/sandy_bricks",
+		"under": "vs_control:blocks/propeller_cable",
+		"particle": "vs_control:blocks/crate/heavy_duty"
+    }
+}

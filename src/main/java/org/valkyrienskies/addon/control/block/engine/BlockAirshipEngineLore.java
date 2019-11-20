@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.valkyrienskies.addon.control.tileentity.TileEntityPropellerEngine;
+import org.valkyrienskies.addon.control.tileentity.TileEntityLegacyEngine;
 import org.valkyrienskies.mod.common.coordinates.VectorImmutable;
 import org.valkyrienskies.mod.common.math.Vector;
 import org.valkyrienskies.mod.common.physics.management.physo.PhysicsObject;
@@ -71,7 +71,7 @@ public abstract class BlockAirshipEngineLore extends BlockAirshipEngine {
     public Vector getCustomBlockForcePosition(World world, BlockPos pos, IBlockState state,
         PhysicsObject physicsObject,
         double secondsToApply) {
-        TileEntityPropellerEngine engineTile = (TileEntityPropellerEngine) world.getTileEntity(pos);
+        TileEntityLegacyEngine engineTile = (TileEntityLegacyEngine) world.getTileEntity(pos);
         if (engineTile != null) {
             VectorImmutable forceOutputNormal = engineTile.getForceOutputNormal(secondsToApply,
                 physicsObject);

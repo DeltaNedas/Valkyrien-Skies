@@ -11,7 +11,7 @@ public class MultiblockRegistry {
 
     public static final String EMPTY_SCHEMATIC_ID = "unknown";
     private static final Map<String, IMultiblockSchematic> MULTIBLOCK_ID_MAP = new HashMap<String, IMultiblockSchematic>();
-    private static final Map<String, List<IMultiblockSchematic>> MULTIBLOCK_PREFIX_TO_VARIENTS = new HashMap<String, List<IMultiblockSchematic>>();
+    private static final Map<String, List<IMultiblockSchematic>> MULTIBLOCK_PREFIX_TO_VARIANTS = new HashMap<String, List<IMultiblockSchematic>>();
 
     public static void registerSchematic(IMultiblockSchematic schematic) {
         String schematicID = schematic.getSchematicID();
@@ -33,8 +33,8 @@ public class MultiblockRegistry {
     }
 
     public static List<IMultiblockSchematic> getSchematicsWithPrefix(String schematicPrefix) {
-        if (MULTIBLOCK_PREFIX_TO_VARIENTS.containsKey(schematicPrefix)) {
-            return MULTIBLOCK_PREFIX_TO_VARIENTS.get(schematicPrefix);
+        if (MULTIBLOCK_PREFIX_TO_VARIANTS.containsKey(schematicPrefix)) {
+            return MULTIBLOCK_PREFIX_TO_VARIANTS.get(schematicPrefix);
         }
         return new ArrayList<IMultiblockSchematic>();
     }
@@ -47,12 +47,12 @@ public class MultiblockRegistry {
             for (IMultiblockSchematic schematic : possibilities) {
                 registerSchematic(schematic);
             }
-            if (MULTIBLOCK_PREFIX_TO_VARIENTS.containsKey(dummyInstance.getSchematicPrefix())) {
+            if (MULTIBLOCK_PREFIX_TO_VARIANTS.containsKey(dummyInstance.getSchematicPrefix())) {
                 throw new IllegalArgumentException(
                     "Duplicate multiblock prefix registered!\n" + dummyInstance
                         .getSchematicPrefix());
             }
-            MULTIBLOCK_PREFIX_TO_VARIENTS.put(dummyInstance.getSchematicPrefix(),
+            MULTIBLOCK_PREFIX_TO_VARIANTS.put(dummyInstance.getSchematicPrefix(),
                 Collections.unmodifiableList(possibilities));
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();

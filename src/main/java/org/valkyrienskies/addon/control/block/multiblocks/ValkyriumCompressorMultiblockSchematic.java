@@ -39,6 +39,8 @@ public class ValkyriumCompressorMultiblockSchematic implements IMultiblockSchema
 		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, 0), boilerCrate));
 		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(0, 0, 1), pistonCrate));
 		structureRelativeToCenter.add(new BlockPosBlockPair(new BlockPos(1, 0, 1), pistonCrate));
+
+		this.schematicID = schematicID;
     }
 
     @Override
@@ -68,25 +70,25 @@ public class ValkyriumCompressorMultiblockSchematic implements IMultiblockSchema
 
     @Override
     public List<IMultiblockSchematic> generateAllVariants() {
-        List<IMultiblockSchematic> varients = new ArrayList<IMultiblockSchematic>();
+        List<IMultiblockSchematic> variants = new ArrayList<IMultiblockSchematic>();
 
         for (EnumMultiblockRotation potentialRotation : EnumMultiblockRotation.values()) {
-            ValkyriumCompressorMultiblockSchematic varient = new ValkyriumCompressorMultiblockSchematic();
+            ValkyriumCompressorMultiblockSchematic variant = new ValkyriumCompressorMultiblockSchematic();
 
-            varient.initializeMultiblockSchematic(
+            variant.initializeMultiblockSchematic(
                 getSchematicPrefix() + ":rot:" + potentialRotation.toString());
 
             List<BlockPosBlockPair> rotatedPairs = new ArrayList<BlockPosBlockPair>();
-            for (BlockPosBlockPair unrotatedPairs : varient.structureRelativeToCenter) {
+            for (BlockPosBlockPair unrotatedPairs : variant.structureRelativeToCenter) {
                 BlockPos rotatedPos = potentialRotation.rotatePos(unrotatedPairs.getPos());
                 rotatedPairs.add(new BlockPosBlockPair(rotatedPos, unrotatedPairs.getBlock()));
             }
-            varient.structureRelativeToCenter.clear();
-            varient.structureRelativeToCenter.addAll(rotatedPairs);
-            varient.multiblockRotation = potentialRotation;
-            varients.add(varient);
+            variant.structureRelativeToCenter.clear();
+            variant.structureRelativeToCenter.addAll(rotatedPairs);
+            variant.multiblockRotation = potentialRotation;
+            variants.add(variant);
         }
-        return varients;
+        return variants;
     }
 
     @Override

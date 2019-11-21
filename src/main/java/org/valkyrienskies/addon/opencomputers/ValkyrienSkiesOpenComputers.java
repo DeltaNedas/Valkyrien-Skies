@@ -18,11 +18,6 @@ package org.valkyrienskies.addon.opencomputers;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.valkyrienskies.addon.opencomputers.block.BlockGPS;
-import org.valkyrienskies.addon.opencomputers.tileentity.TileEntityGPS;
-import org.valkyrienskies.mod.common.ValkyrienSkiesMod;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -31,6 +26,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.valkyrienskies.addon.opencomputers.block.BlockGPS;
+import org.valkyrienskies.addon.opencomputers.tileentity.TileEntityGPS;
+import org.valkyrienskies.mod.client.BaseModel;
+import org.valkyrienskies.mod.common.ValkyrienSkiesMod;
 
 @Mod(
     name = ValkyrienSkiesOpenComputers.MOD_NAME,

@@ -75,8 +75,8 @@ tooltip.vs_control.boiler_crate=Contains the machinery needed to boil most liqui
 tile.control_crate.name=Control Crate
 tooltip.vs_control.control_crate=Contains circuitry required for network I/O.\nUsed in most multiblocks.
 
-tile.gear_crate.name=Gear Crate
-tooltip.vs_control.gear_crate=Some gears meshed together, used in larger multiblocks.
+tile.gears_crate.name=Gears Crate
+tooltip.vs_control.gears_crate=Some gears meshed together, used in larger multiblocks.
 
 tile.heavy_duty_crate.name=Heavy Duty Crate
 tooltip.vs_control.heavy_duty_crate=A much stronger crate capable of bearing greater loads.
@@ -100,7 +100,7 @@ tooltip.vs_control.legacy_engine=Legacy engine, only requires a redstone signal 
 
 ## Misc.
 tile.compacted_valkyrium.name=Compacted Valkyrium
-tooltip.vs_control.compacted_valkyrium=Lift force: %d Newtons.
+tooltip.vs_control.compacted_valkyrium=Lift force: %02f Newtons.
 
 tile.gyroscope_stabilizer.name=Ship Gyroscope Stabilizer
 tooltip.vs_control.gyroscope_stabilizer=This block passively provides a torque to makes the ship level.

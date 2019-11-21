@@ -1,0 +1,14 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+		"model": "vs_control:sandy_bricks"
+    },
+    "inventory": [
+      {
+        "model": "vs_control:sandy_bricks",
+        "transform": "forge:default-block"
+      }
+    ]
+  }
+}

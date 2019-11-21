@@ -4,7 +4,7 @@ tooltip.vs_control.relay_wire=Используется для подключен
 
 item.vs_wrench.name=гаечный ключ
 tooltip.vs_control.wrench=Он используется для сборки большого оборудования и вращения коробки передач.
-tooltip.vs_control.wrench_usage=Чтобы его построить, нужен гаечный ключ.
+tooltip.vs_control.wrench.usage=Чтобы его построить, нужен гаечный ключ.
 # googlel translate
 
 

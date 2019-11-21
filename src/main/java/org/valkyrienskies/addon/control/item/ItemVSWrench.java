@@ -41,7 +41,7 @@ public class ItemVSWrench extends BaseItem {
         List<String> itemInformation,
         ITooltipFlag advanced) {
         if (VSConfig.wrenchModeless) {
-            itemInformation.add(TextFormatting.BLUE + I18n.format("tooltip.vs_control.wrench_toggle"));
+            itemInformation.add(TextFormatting.BLUE + I18n.format("tooltip.vs_control.wrench.toggle"));
         } else {
             itemInformation.add(TextFormatting.BLUE + I18n.format("tooltip.vs_control.wrench." + this.mode.toString()));
             itemInformation.add(TextFormatting.GREEN + "" + TextFormatting.ITALIC + I18n.format("tooltip.vs_control.wrench_modes"));

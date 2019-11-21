@@ -14,12 +14,15 @@ tooltip.vs_control.sail_fabric=A durable, light sheet of fabric suitable for a s
 
 item.iron_gear.name=Iron Gear
 
+item.sandy_clay.name=Sandy Clay
+item.sandy_brick.name=Sandy Brick
+
 item.vs_wrench.name=VS Wrench
-tooltip.vs_control.wrench_usage=A VS Wrench is needed to construct this.
-tooltip.vs_control.wrench_modes=Shift + Right-Click to change modes.
-tooltip.vs_control.wrench_switched.construct=Switched VS Wrench to Construction mode.
-tooltip.vs_control.wrench_switched.deconstruct=Switched VS Wrench to Deconstruction mode.
-tooltip.vs_control.wrench_toggle=Right click multi-blocks to toggle constructed -> deconstructed.
+tooltip.vs_control.wrench.usage=A VS Wrench is needed to construct this.
+tooltip.vs_control.wrench.modes=Shift + Right-Click to change modes.
+tooltip.vs_control.wrench.switched.construct=Switched VS Wrench to Construction mode.
+tooltip.vs_control.wrench.switched.deconstruct=Switched VS Wrench to Deconstruction mode.
+tooltip.vs_control.wrench.toggle=Right click multi-blocks to toggle constructed -> deconstructed.
 tooltip.vs_control.wrench.construct=Used to construct multi-blocks and orient the gearbox.
 tooltip.vs_control.wrench.deconstruct=Used to safely deconstruct multi-blocks.
 
@@ -107,6 +110,9 @@ tooltip.vs_control.gyroscope_stabilizer=This block passively provides a torque t
 
 tile.gyroscope_dampener.name=Ship Gyroscope Dampener
 tooltip.vs_control.gyroscope_dampener=This block passively provides a torque to prevent the ship from rocking.
+
+tile.sandy_bricks.name=Sandy Bricks
+tooltip.vs_control.sandy_bricks=Brittle bricks that can hold in much more heat than regular bricks.
 
 
 ## Not Yet Implemented

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -52,7 +53,6 @@ public class BaseCrate extends BaseBlock implements ITileEntityProvider, IBlockF
 		} else if (this.multiblockType == EnumMultiblockType.RUDDER) {
 			return new TileEntityRudder();
 		}
-		System.out.println(">>>>>>>>>>>>>> inb4 NPE");
 		return null;
 	}
 
@@ -118,8 +118,24 @@ public class BaseCrate extends BaseBlock implements ITileEntityProvider, IBlockF
 		return false;
 	}
 
+	// Blockstate stuff
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		return state.withProperty(CONSTRUCTED, this.multiblockType != EnumMultiblockType.NONE);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] {CONSTRUCTED});
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(CONSTRUCTED, meta == 1);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(CONSTRUCTED) ? 1 : 0;
 	}
 }

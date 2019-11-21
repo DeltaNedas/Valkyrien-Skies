@@ -25,6 +25,7 @@ import org.valkyrienskies.mod.common.ValkyrienSkiesMod;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -71,4 +72,19 @@ public class ValkyrienSkiesOpenComputers {
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityGPS.class, "gps_tileentity");
     }
+
+    @SubscribeEvent
+    public static void onModelRegister(ModelRegistryEvent event) {
+		for (Item item : ITEMS) {
+			if (item instanceof BaseModel) {
+				((BaseModel) item).registerModels();
+			}
+		}
+
+		for (Block block : BLOCKS) {
+			if (block instanceof BaseModel) {
+				((BaseModel) block).registerModels();
+			}
+		}
+	}
 }

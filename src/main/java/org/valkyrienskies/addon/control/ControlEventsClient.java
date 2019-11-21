@@ -6,10 +6,12 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.valkyrienskies.addon.control.piloting.IShipPilot;
 import org.valkyrienskies.addon.control.tileentity.TileEntityPilotableImpl;
+import org.valkyrienskies.mod.client.BaseModel;
 
 public class ControlEventsClient {
 
@@ -33,5 +35,20 @@ public class ControlEventsClient {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onModelRegister(ModelRegistryEvent event) {
+		for (Item item : ValkyrienSkiesControl.ITEMS) {
+			if (item instanceof BaseModel) {
+				((BaseModel) item).registerModels();
+			}
+		}
+
+		for (Block block : ValkyrienSkiesControl.BLOCKS) {
+			if (block instanceof BaseModel) {
+				((BaseModel) block).registerModels();
+			}
+		}
+	}
 
 }

@@ -23,7 +23,6 @@ public class ClientProxyWorld extends CommonProxyWorld {
     @Override
     public void init(FMLStateEvent e) {
         super.init(e);
-        registerBlockItem(ValkyrienSkiesWorld.INSTANCE.valkyriumOre);
     }
 
     @Override

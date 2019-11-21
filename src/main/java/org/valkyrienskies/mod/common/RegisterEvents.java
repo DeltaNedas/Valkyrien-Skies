@@ -17,13 +17,6 @@
 package org.valkyrienskies.mod.common;
 
 import javax.annotation.Nonnull;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.valkyrienskies.mod.client.BaseModel;
-import org.valkyrienskies.mod.common.entity.EntityMountable;
-import org.valkyrienskies.mod.common.entity.EntityMountableChair;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -34,6 +27,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.valkyrienskies.mod.client.BaseModel;
+import org.valkyrienskies.mod.common.entity.EntityMountable;
+import org.valkyrienskies.mod.common.entity.EntityMountableChair;
 
 @Mod.EventBusSubscriber(modid = ValkyrienSkiesMod.MOD_ID)
 public class RegisterEvents {

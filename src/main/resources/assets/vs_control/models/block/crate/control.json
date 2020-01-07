@@ -1,13 +1,11 @@
 {
 	"textures": {
-		"metal": "vs_control:blocks/cauldron_side",
-		"1": "vs_control:blocks/planks_spruce",
-		"2": "vs_control:blocks/planks_spruce",
-		"redstone": "block/redstone_block",
+		"metal": "blocks/cauldron_side",
+		"redstone": "blocks/redstone_block",
 		"fabric": "vs_control:blocks/propeller_sail",
 		"wood": "vs_control:blocks/propeller_wood_01",
 		"under": "vs_control:blocks/propeller_wood_02",
-		"particle": "vs_control:blocks/planks_spruce"
+		"particle": "blocks/planks_spruce"
 	},
 	"elements": [
 		{
@@ -208,12 +206,12 @@
 			"to": [9, 11, 9],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 13, 8]},
 			"faces": {
-				"north": {"uv": [2, 2, 4, 7], "texture": "#1", "cullface": "north"},
-				"east": {"uv": [2, 2, 4, 7], "texture": "#2"},
-				"south": {"uv": [2, 2, 4, 7], "texture": "#2"},
-				"west": {"uv": [2, 2, 4, 7], "texture": "#2"},
-				"up": {"uv": [10, 5, 12, 7], "texture": "#2"},
-				"down": {"uv": [0, 0, 2, 2], "texture": "#2"}
+				"north": {"uv": [2, 2, 4, 7], "texture": "#particle", "cullface": "north"},
+				"east": {"uv": [2, 2, 4, 7], "texture": "#particle"},
+				"south": {"uv": [2, 2, 4, 7], "texture": "#particle"},
+				"west": {"uv": [2, 2, 4, 7], "texture": "#particle"},
+				"up": {"uv": [10, 5, 12, 7], "texture": "#particle"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#particle"}
 			}
 		},
 		{

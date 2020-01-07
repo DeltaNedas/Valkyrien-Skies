@@ -44,7 +44,7 @@ public class ItemVSWrench extends BaseItem {
             itemInformation.add(TextFormatting.BLUE + I18n.format("tooltip.vs_control.wrench.toggle"));
         } else {
             itemInformation.add(TextFormatting.BLUE + I18n.format("tooltip.vs_control.wrench." + this.mode.toString()));
-            itemInformation.add(TextFormatting.GREEN + "" + TextFormatting.ITALIC + I18n.format("tooltip.vs_control.wrench_modes"));
+            itemInformation.add(TextFormatting.GREEN + "" + TextFormatting.ITALIC + I18n.format("tooltip.vs_control.wrench.modes"));
         }
     }
 

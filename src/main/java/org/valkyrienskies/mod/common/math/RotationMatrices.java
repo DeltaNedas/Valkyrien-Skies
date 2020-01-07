@@ -1,19 +1,3 @@
-/*
- * Adapted from the Wizardry License
- *
- * Copyright (c) 2015-2019 the Valkyrien Skies team
- *
- * Permission is hereby granted to any persons and/or organizations using this software to copy, modify, merge, publish, and distribute it.
- * Said persons and/or organizations are not allowed to use the software or any derivatives of the work for commercial use or any other means to generate income unless it is to be used as a part of a larger project (IE: "modpacks"), nor are they allowed to claim this software as their own.
- *
- * The persons and/or organizations are also disallowed from sub-licensing and/or trademarking this software without explicit permission from the Valkyrien Skies team.
- *
- * Any persons and/or organizations using this software must disclose their source code and have it publicly available, include this license, provide sufficient credit to the original authors of the project (IE: The Valkyrien Skies team), as well as provide a link to the original project.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- */
-
 package org.valkyrienskies.mod.common.math;
 
 import net.minecraft.entity.Entity;
@@ -90,10 +74,6 @@ public class RotationMatrices {
             0, 0, 0, 1.0D};
     }
 
-    public static double[] getZeroMatrix(int size) {
-        return new double[size * size];
-    }
-
     private static double[] getMatrixProduct(double[] M1, double[] M2) {
         double[] product = new double[16];
         product[0] = (M1[0] * M2[0] + M1[1] * M2[4] + M1[2] * M2[8] + M1[3] * M2[12]);
@@ -163,6 +143,7 @@ public class RotationMatrices {
         VectorImmutable entityLookImmutable = new Vector(entityLook.x, entityLook.y, entityLook.z).toImmutable();
         double pitch = VSMath.getPitchFromVectorImmutable(entityLookImmutable);
         double yaw = VSMath.getYawFromVectorImmutable(entityLookImmutable, pitch);
+
         entity.rotationYaw = (float) yaw;
         entity.rotationPitch = (float) pitch;
 
@@ -178,41 +159,6 @@ public class RotationMatrices {
         entity.motionZ = entityMotion.z;
 
         entity.setPosition(entityPos.x, entityPos.y, entityPos.z);
-    }
-
-    public static void applyTransform3by3(double[] M, Vector vec) {
-        double xx = vec.x;
-        double yy = vec.y;
-        double zz = vec.z;
-        vec.x = (xx * M[0] + yy * M[1] + zz * M[2]);
-        vec.y = (xx * M[3] + yy * M[4] + zz * M[5]);
-        vec.z = (xx * M[6] + yy * M[7] + zz * M[8]);
-    }
-
-    public static Vector get3by3TransformedVec(double[] M, Vector v) {
-        Vector vec = new Vector(v);
-        applyTransform3by3(M, vec);
-        return vec;
-    }
-
-    public static double[] inverse3by3(double[] matrix) {
-        double[] inverse = new double[9];
-        inverse[0] = (matrix[4] * matrix[8] - matrix[5] * matrix[7]);
-        inverse[3] = (matrix[5] * matrix[6] - matrix[3] * matrix[8]);
-        inverse[6] = (matrix[3] * matrix[7] - matrix[4] * matrix[6]);
-        inverse[1] = (matrix[2] * matrix[6] - matrix[1] * matrix[8]);
-        inverse[4] = (matrix[0] * matrix[8] - matrix[2] * matrix[6]);
-        inverse[7] = (matrix[6] * matrix[1] - matrix[0] * matrix[7]);
-        inverse[2] = (matrix[1] * matrix[5] - matrix[2] * matrix[4]);
-        inverse[5] = (matrix[2] * matrix[3] - matrix[0] * matrix[5]);
-        inverse[8] = (matrix[0] * matrix[4] - matrix[1] * matrix[3]);
-        double det = matrix[0] * inverse[0] + matrix[1] * inverse[3] + matrix[2] * inverse[6];
-        for (int i = 0; i < 9; i += 3) {
-            inverse[i] /= det;
-            inverse[i + 1] /= det;
-            inverse[i + 2] /= det;
-        }
-        return inverse;
     }
 
 }

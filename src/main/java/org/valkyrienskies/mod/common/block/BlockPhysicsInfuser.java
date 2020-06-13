@@ -36,6 +36,7 @@ public class BlockPhysicsInfuser extends BlockVSDirectional implements ITileEnti
 
     public static final PropertyBool INFUSER_LIGHT_ON = PropertyBool.create("infuser_light_on");
 
+<<<<<<< HEAD
 	protected String name;
 
     int shipSpawnDetectorID;
@@ -44,6 +45,14 @@ public class BlockPhysicsInfuser extends BlockVSDirectional implements ITileEnti
         super(name, Material.WOOD, 0.0F, true);
 		this.name = name;
         shipSpawnDetectorID = DetectorManager.DetectorIDs.ShipSpawnerGeneral.ordinal();
+=======
+    public BlockPhysicsInfuser(Material materialIn) {
+        super(materialIn);
+    }
+
+    public DetectorManager.DetectorIDs getShipSpawnDetectorID() {
+        return DetectorManager.DetectorIDs.ShipSpawnerGeneral;
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
     }
 
     @Override

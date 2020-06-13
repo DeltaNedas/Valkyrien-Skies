@@ -3,10 +3,21 @@ package org.valkyrienskies.mod.common.math;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityFireball;
+<<<<<<< HEAD
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4dc;
 import org.joml.Vector3d;
 import org.valkyrienskies.mod.common.coordinates.VectorImmutable;
+=======
+import net.minecraft.util.math.AxisAlignedBB;
+import org.valkyrienskies.mod.common.coordinates.CoordinateSpaceType;
+import org.valkyrienskies.mod.common.coordinates.ISubspacedEntity;
+import org.valkyrienskies.mod.common.coordinates.ShipTransform;
+import org.valkyrienskies.mod.common.coordinates.VectorImmutable;
+import org.valkyrienskies.mod.common.entity.PhysicsWrapperEntity;
+import org.valkyrienskies.mod.common.physics.collision.polygons.Polygon;
+import valkyrienwarfare.api.TransformType;
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
 /**
  * This is getting deleted. Do NOT Use!
@@ -154,9 +165,47 @@ public class RotationMatrices {
             ball.accelerationZ = entityMotion.z;
         }
 
+<<<<<<< HEAD
         entity.motionX = entityMotion.x;
         entity.motionY = entityMotion.y;
         entity.motionZ = entityMotion.z;
+=======
+        entity.motionX = entityMotion.X;
+        entity.motionY = entityMotion.Y;
+        entity.motionZ = entityMotion.Z;
+
+        // Transform the player BB so that its correct as well.
+        AxisAlignedBB playerBB = entity.getEntityBoundingBox();
+        Polygon playerBBPoly = new Polygon(playerBB, shipTransform, transformType);
+
+        entity.setPosition(entityPos.X, entityPos.Y, entityPos.Z);
+        entity.setEntityBoundingBox(playerBBPoly.getEnclosedAABB());
+    }
+
+    public static void applyTransform3by3(double[] M, Vector vec) {
+        double xx = vec.X;
+        double yy = vec.Y;
+        double zz = vec.Z;
+        vec.X = (xx * M[0] + yy * M[1] + zz * M[2]);
+        vec.Y = (xx * M[3] + yy * M[4] + zz * M[5]);
+        vec.Z = (xx * M[6] + yy * M[7] + zz * M[8]);
+    }
+
+    public static void doRotationOnly(double[] M, Vector vec) {
+        double x = vec.X;
+        double y = vec.Y;
+        double z = vec.Z;
+        vec.X = x * M[0] + y * M[1] + z * M[2];
+        vec.Y = x * M[4] + y * M[5] + z * M[6];
+        vec.Z = x * M[8] + y * M[9] + z * M[10];
+    }
+
+    public static Vector get3by3TransformedVec(double[] M, Vector v) {
+        Vector vec = new Vector(v);
+        applyTransform3by3(M, vec);
+        return vec;
+    }
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
         entity.setPosition(entityPos.x, entityPos.y, entityPos.z);
     }

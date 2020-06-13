@@ -35,10 +35,20 @@ public class PhysObjectRenderManager {
     private final PhysicsObject parent;
     private final PhysRenderChunk[][] renderChunks;
 
+<<<<<<< HEAD
     public PhysObjectRenderManager(PhysicsObject toRender, BlockPos offsetPos) {
         this.parent = toRender;
         this.offsetPos = offsetPos;
         this.renderChunks = new PhysRenderChunk[parent.getOwnedChunks().getChunkLengthX()][parent
+=======
+    public void updateOffsetPos(BlockPos newPos) {
+        offsetPos = newPos;
+    }
+
+    public void renderBlockLayer(BlockRenderLayer layerToRender, double partialTicks, int pass, ICamera iCamera) {
+        if (renderChunks == null) {
+            renderChunks = new PhysRenderChunk[parent.getOwnedChunks().chunkLengthX()][parent
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
                 .getOwnedChunks()
                 .getChunkLengthZ()];
         for (int xChunk = 0; xChunk < parent.getOwnedChunks().getChunkLengthX(); xChunk++) {
@@ -64,7 +74,7 @@ public class PhysObjectRenderManager {
         applyRenderTransform(partialTicks);
         for (PhysRenderChunk[] chunkArray : renderChunks) {
             for (PhysRenderChunk renderChunk : chunkArray) {
-                renderChunk.renderBlockLayer(layerToRender, partialTicks, pass);
+                renderChunk.renderBlockLayer(layerToRender, partialTicks, pass, iCamera);
             }
         }
 
@@ -131,9 +141,17 @@ public class PhysObjectRenderManager {
         }
     }
 
+<<<<<<< HEAD
     public boolean shouldRender() {
         ICamera camera = ClientProxy.lastCamera;
         return true; // camera == null || camera.isBoundingBoxInFrustum(parent.getShipBoundingBox());
+=======
+    public boolean shouldRender(ICamera camera) {
+        if (parent.getWrapperEntity().isDead) {
+            return false;
+        }
+        return camera == null || camera.isBoundingBoxInFrustum(parent.getShipBoundingBox());
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
     }
 
     public void applyRenderTransform(double partialTicks) {

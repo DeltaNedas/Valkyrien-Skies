@@ -2,30 +2,15 @@ package org.valkyrienskies.mixin.world;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.Interface.Remap;
-import org.spongepowered.asm.mixin.Intrinsic;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -44,6 +29,13 @@ import org.valkyrienskies.mod.common.ship_handling.IPhysObjectWorld;
 import org.valkyrienskies.mod.common.util.ValkyrienUtils;
 import valkyrienwarfare.api.TransformType;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
 // TODO: This class is horrible
 @Mixin(value = World.class, priority = 2018)
 @Implements(@Interface(iface = MixinWorldIntrinsicMethods.class, prefix = "vs$", remap = Remap.NONE))
@@ -51,11 +43,18 @@ public abstract class MixinWorld implements IWorldVS, IHasShipManager,
     IRotationNodeWorldProvider {
 
     private static final double MAX_ENTITY_RADIUS_ALT = 2;
+    // The maximum edge length of a bounding box we'll take seriously
     private static final double BOUNDING_BOX_EDGE_LIMIT = 10000;
-    private static final double BOUNDING_BOX_SIZE_LIMIT = 10000;
+    // The maximum volume of a bounding box we'll take seriously
+    private static final double BOUNDING_BOX_SIZE_LIMIT = 10000000;
     private boolean dontIntercept = false;
     // Pork added on to this already bad code because it was already like this so he doesn't feel bad about it
+<<<<<<< HEAD
     private PhysicsObject dontInterceptShip = null;
+=======
+    private PhysicsWrapperEntity dontInterceptShip = null;
+    private final ISubspace worldSubspace = new ImplSubspace(null);
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
     // The IWorldShipManager
     private IPhysObjectWorld manager = null;
@@ -75,7 +74,11 @@ public abstract class MixinWorld implements IWorldVS, IHasShipManager,
     @Intrinsic(displace = true)
     public Biome vs$getBiomeForCoordsBody(BlockPos pos) {
         Optional<PhysicsObject> physicsObject = ValkyrienUtils
+<<<<<<< HEAD
             .getPhysoManagingBlock(World.class.cast(this), pos);
+=======
+            .getPhysicsObject(World.class.cast(this), pos);
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
         if (physicsObject.isPresent()) {
             pos = physicsObject.get()
@@ -114,7 +117,11 @@ public abstract class MixinWorld implements IWorldVS, IHasShipManager,
         double ySpeed, double zSpeed, int... parameters) {
         BlockPos pos = new BlockPos(x, y, z);
         Optional<PhysicsObject> physicsObject = ValkyrienUtils
+<<<<<<< HEAD
             .getPhysoManagingBlock(World.class.cast(this), pos);
+=======
+            .getPhysicsObject(World.class.cast(this), pos);
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
         if (physicsObject.isPresent()) {
             Vector newPosVec = new Vector(x, y, z);
@@ -220,7 +227,11 @@ public abstract class MixinWorld implements IWorldVS, IHasShipManager,
         BlockPos pos = new BlockPos((aabb.minX + aabb.maxX) / 2D, (aabb.minY + aabb.maxY) / 2D,
             (aabb.minZ + aabb.maxZ) / 2D);
         Optional<PhysicsObject> physicsObject = ValkyrienUtils
+<<<<<<< HEAD
             .getPhysoManagingBlock(World.class.cast(this), pos);
+=======
+            .getPhysicsObject(World.class.cast(this), pos);
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
         if (physicsObject.isPresent()) {
             Polygon poly = new Polygon(aabb, physicsObject.get()
@@ -254,7 +265,11 @@ public abstract class MixinWorld implements IWorldVS, IHasShipManager,
             (boundingBox.minY + boundingBox.maxY) / 2D, (boundingBox.minZ + boundingBox.maxZ) / 2D);
 
         Optional<PhysicsObject> physicsObject = ValkyrienUtils
+<<<<<<< HEAD
             .getPhysoManagingBlock(World.class.cast(this), pos);
+=======
+            .getPhysicsObject(World.class.cast(this), pos);
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
         if (physicsObject.isPresent()) {
             Polygon poly = new Polygon(boundingBox, physicsObject.get()
@@ -326,11 +341,17 @@ public abstract class MixinWorld implements IWorldVS, IHasShipManager,
         RayTraceResult vanillaTrace = World.class.cast(this)
             .rayTraceBlocks(vec31, vec32, stopOnLiquid,
                 ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
+<<<<<<< HEAD
 
 
         IPhysObjectWorld physObjectWorld = ((IHasShipManager) (this)).getManager();
 
         if (physObjectWorld == null) {
+=======
+        WorldPhysObjectManager physManager = ValkyrienSkiesMod.VS_PHYSICS_MANAGER
+            .getManagerForWorld(World.class.cast(this));
+        if (physManager == null) {
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
             return vanillaTrace;
         }
 
@@ -393,7 +414,11 @@ public abstract class MixinWorld implements IWorldVS, IHasShipManager,
     }
 
     @Override
+<<<<<<< HEAD
     public void setManager(Function<World, IPhysObjectWorld> managerSupplier) {
+=======
+    public void setManager(Function<World, IWorldShipManager> managerSupplier) {
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
         manager = managerSupplier.apply(World.class.cast(this));
     }
 

@@ -1,11 +1,15 @@
+<<<<<<< HEAD
 #PARSE_ESCAPES
 
+=======
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 # Items
 item.relay_wire.name=中继线缆
 tooltip.vs_control.relay_wire=用来把中继器连接到组件或其他中继器上。
 message.vs_control.error_relay_wire_limit=其中一方连接数已达上限。网络中继器可以建立%d个连接，其余所有组件都只能建立1个连接。
 message.vs_control.error_relay_wire_length=线缆太短，无法建立连接！
 
+<<<<<<< HEAD
 item.vanishing_wire.name=隐形线缆
 tooltip.vs_control.vanishing_wire=功能和普通线缆一样，但是手里不拿着它的话你是看不见的。
 
@@ -14,6 +18,12 @@ tooltip.vs_control.wrench_usage=需要用VS扳手来构建它。
 tooltip.vs_control.wrench_modes=Shift+右击来改变模式。
 tooltip.vs_control.wrench_switched.construct=已切换扳手至构建模式。
 tooltip.vs_control.wrench_switched.deconstruct=已切换扳手至拆解模式。
+=======
+item.vs_wrench.name=VS扳手
+tooltip.vs_control.wrench_usage=需要用VS扳手来构建它。
+tooltip.vs_control.wrench_modes=Shift+右击来改变模式。
+tooltip.vs_control.wrench_switched=已切换扳手至%sion模式。
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 tooltip.vs_control.wrench_toggle=右击多方块结构来拆解它。
 tooltip.vs_control.wrench.construct=可以用来构建多方块结构或调整齿轮箱朝向。
 tooltip.vs_control.wrench.deconstruct=可以用来安全拆解多方块结构。
@@ -48,12 +58,15 @@ tooltip.vs_control.gearbox_2=连接到速度计来调整扭矩输出。
 tile.rotation_axle.name=传动轴
 tooltip.vs_control.rotation_axle=用来把瓦尔基里发动机连接到齿轮箱或螺旋桨上。
 
+<<<<<<< HEAD
 
 ## Network
 tile.network_display.name=网络显示器
 tooltip.vs_control.network_display=尚未实装。
 tooltip.vs_control.network_display=[未完成]可以列出当前网络中的所有连接的节点。
 
+=======
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 tile.network_relay.name=网络中继器
 tooltip.vs_control.network_relay=通过使用线缆来把最多%d个组件或其他中继器连接起来。
 
@@ -85,7 +98,11 @@ tooltip.vs_control.legacy_engine=老式引擎，仅需红石信号即可工作�
 
 ## Misc.
 tile.compacted_valkyrium.name=压缩瓦尔基里块
+<<<<<<< HEAD
 tooltip.vs_control.compacted_valkyrium=升力：%dN。
+=======
+# Upward force: 200KN
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
 tile.gyroscope_stabilizer.name=稳定陀螺仪
 tooltip.vs_control.gyroscope_stabilizer=这个方块会被动地提供一个使船体保持水平的扭矩。
@@ -97,3 +114,9 @@ tooltip.vs_control.gyroscope_dampener=这个方块会被动地提供一个防止
 ## Not Yet Implemented
 tile.lift_valve.name=支撑阀
 tooltip.vs_control.lift_valve=尚未实装。
+<<<<<<< HEAD
+=======
+
+tile.network_display.name=网络显示器
+tooltip.vs_control.network_display=尚未实装。
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc

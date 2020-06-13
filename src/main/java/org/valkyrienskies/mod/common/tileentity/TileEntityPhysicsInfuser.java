@@ -108,8 +108,14 @@ public class TileEntityPhysicsInfuser extends TileEntity implements ITickable, I
                 // Make sure we don't try to create a ship when we're already in ship space.
                 if (!ShipChunkAllocator.isBlockInShipyard(getPos())) {
                     try {
+<<<<<<< HEAD
                         ValkyrienUtils.assembleShipAsOrderedByPlayer(getWorld(), null, getPos())
                             .thenRunAsync(() -> {
+=======
+                        IThreadListener gameTickThread = (WorldServer) world;
+                        PhysicsWrapperEntity.createWrapperEntity(this, ((BlockPhysicsInfuser) infuserState.getBlock()).getShipSpawnDetectorID())
+                            .thenAcceptTickSync(ship -> {
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
                                 System.out.println("Spawning ship entity in thread " + Thread.currentThread().getName());
                                 // TODO: Hmmmmmmmm
                                 // getWorld().spawnEntity(ship);

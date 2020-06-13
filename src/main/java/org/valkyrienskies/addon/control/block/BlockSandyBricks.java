@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/main/java/org/valkyrienskies/addon/control/block/BlockSandyBricks.java
 /*
  * Adapted from the Wizardry License
  *
@@ -33,6 +34,12 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+=======
+package org.valkyrienskies.mod.common.physics.management;
+
+import java.util.HashMap;
+import java.util.Map;
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc:src/main/java/org/valkyrienskies/mod/common/physics/management/DimensionPhysObjectManager.java
 import net.minecraft.world.World;
 import org.valkyrienskies.addon.control.util.BaseBlock;
 

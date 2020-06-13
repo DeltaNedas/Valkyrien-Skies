@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/main/java/org/valkyrienskies/addon/control/item/ItemSandyClay.java
 /*
  * Adapted from the Wizardry License
  *
@@ -15,6 +16,9 @@
  */
 
 package org.valkyrienskies.addon.control.item;
+=======
+package org.valkyrienskies.mod.client.render;
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc:src/main/java/org/valkyrienskies/mod/client/render/PhysicsWrapperEntityRenderFactory.java
 
 import org.valkyrienskies.addon.control.util.BaseItem;
 

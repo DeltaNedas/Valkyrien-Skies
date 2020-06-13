@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/main/java/org/valkyrienskies/addon/control/item/ItemSailFabric.java
 /*
  * Adapted from the Wizardry License
  *
@@ -15,6 +16,9 @@
  */
 
 package org.valkyrienskies.addon.control.item;
+=======
+package org.valkyrienskies.addon.opencomputers.block;
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc:src/main/java/org/valkyrienskies/addon/opencomputers/block/GPSBlock.java
 
 import java.util.List;
 import javax.annotation.Nullable;

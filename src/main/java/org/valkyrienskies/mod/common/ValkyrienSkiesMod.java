@@ -71,7 +71,7 @@ public class ValkyrienSkiesMod {
     // MOD INFO CONSTANTS
     public static final String MOD_ID = "valkyrienskies";
     public static final String MOD_NAME = "Valkyrien Skies";
-    public static final String MOD_VERSION = "1.0";
+    public static final String MOD_VERSION = "1.0-alpha-1";
     static final String MOD_FINGERPRINT = "b308676914a5e7d99459c1d2fb298744387899a7";
 
     // MOD INSTANCE
@@ -161,6 +161,7 @@ public class ValkyrienSkiesMod {
     }
 
     private void registerNetworks(FMLStateEvent event) {
+<<<<<<< HEAD
         physWrapperNetwork = NetworkRegistry.INSTANCE.newSimpleChannel("valkyrien_skies");
         physWrapperNetwork.registerMessage(ShipIndexDataMessageHandler.class,
             ShipIndexDataMessage.class, 0, Side.CLIENT);
@@ -168,6 +169,116 @@ public class ValkyrienSkiesMod {
             SpawnPhysObjMessage.class, 1, Side.CLIENT);
         physWrapperNetwork.registerMessage(VSGuiButtonHandler.class,
             VSGuiButtonMessage.class, 2, Side.SERVER);
+=======
+        physWrapperNetwork = NetworkRegistry.INSTANCE.newSimpleChannel("physChannel");
+        physWrapperNetwork.registerMessage(PhysWrapperPositionHandler.class,
+            WrapperPositionMessage.class, 0, Side.CLIENT);
+        physWrapperNetwork.registerMessage(SubspacedEntityRecordHandler.class,
+            SubspacedEntityRecordMessage.class, 1, Side.CLIENT);
+        physWrapperNetwork.registerMessage(SubspacedEntityRecordHandler.class,
+            SubspacedEntityRecordMessage.class, 2, Side.SERVER);
+        physWrapperNetwork.registerMessage(VSGuiButtonHandler.class,
+            VSGuiButtonMessage.class, 3, Side.SERVER);
+    }
+
+    void registerBlocks(RegistryEvent.Register<Block> event) {
+        physicsInfuser = new BlockPhysicsInfuser(Material.ROCK).setHardness(8f)
+            .setTranslationKey("physics_infuser")
+            .setRegistryName(MOD_ID, "physics_infuser")
+            .setCreativeTab(VS_CREATIVE_TAB);
+        physicsInfuserCreative = new BlockPhysicsInfuserCreative(Material.ROCK).setHardness(12f)
+            .setTranslationKey("creative_physics_infuser")
+            .setRegistryName(MOD_ID, "creative_physics_infuser")
+            .setCreativeTab(VS_CREATIVE_TAB);
+        // // Do not put the VS_CREATIVE_TAB block into the creative tab
+        physicsInfuserDummy = new BlockPhysicsInfuserDummy(Material.ROCK).setHardness(12f)
+            .setTranslationKey("dummy_physics_infuser")
+            .setRegistryName(MOD_ID, "dummy_physics_infuser")
+            .setCreativeTab(VS_CREATIVE_TAB);
+
+        event.getRegistry().register(physicsInfuser);
+        event.getRegistry().register(physicsInfuserCreative);
+        event.getRegistry().register(physicsInfuserDummy);
+
+        registerTileEntities();
+    }
+
+    /**
+     * Create our new instance of {@link Kryo}. This is done asynchronously with CompletableFuture
+     * so as not to slow down initialization. We save a lot of time this way!
+     */
+    private void serializationInitAsync() {
+        kryoInstance = CompletableFuture.supplyAsync(() -> {
+            long start = System.currentTimeMillis();
+
+            Kryo kryo = new Kryo();
+
+            // region More serializers
+
+            //noinspection ArraysAsListWithZeroOrOneArgument
+            UnmodifiableCollectionsSerializer.registerSerializers(kryo);
+            SynchronizedCollectionsSerializer.registerSerializers(kryo);
+
+            ImmutableListSerializer.registerSerializers(kryo);
+            ImmutableSetSerializer.registerSerializers(kryo);
+            ImmutableMapSerializer.registerSerializers(kryo);
+            ImmutableMultimapSerializer.registerSerializers(kryo);
+            ImmutableTableSerializer.registerSerializers(kryo);
+            ReverseListSerializer.registerSerializers(kryo);
+            UnmodifiableNavigableSetSerializer.registerSerializers(kryo);
+
+            ArrayListMultimapSerializer.registerSerializers(kryo);
+            HashMultimapSerializer.registerSerializers(kryo);
+            LinkedHashMultimapSerializer.registerSerializers(kryo);
+            LinkedListMultimapSerializer.registerSerializers(kryo);
+            TreeMultimapSerializer.registerSerializers(kryo);
+            ArrayTableSerializer.registerSerializers(kryo);
+            HashBasedTableSerializer.registerSerializers(kryo);
+            TreeBasedTableSerializer.registerSerializers(kryo);
+
+            // endregion
+
+            kryo.register(ConcurrentIndexedCollection.class);
+            kryo.register(ShipData.class);
+            kryo.register(ShipPositionData.class);
+            kryo.register(VSChunkClaim.class);
+            kryo.register(HashSet.class);
+            kryo.register(UUID.class, new UUIDSerializer());
+
+            // This should be changed to true but only once we're stable
+            kryo.setRegistrationRequired(false);
+
+            log.debug("Kryo initialization: " + (System.currentTimeMillis() - start) + "ms");
+
+            return kryo;
+        });
+    }
+
+    /**
+     * @return The Kryo instance for the mod. This operation is blocking!
+     */
+    public Kryo getKryo() {
+        try {
+            return kryoInstance.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void registerItems(RegistryEvent.Register<Item> event) {
+        registerItemBlock(event, physicsInfuser);
+        registerItemBlock(event, physicsInfuserCreative);
+
+        this.physicsCore = new ItemPhysicsCore().setTranslationKey("physics_core")
+            .setRegistryName(MOD_ID, "physics_core")
+            .setCreativeTab(ValkyrienSkiesMod.VS_CREATIVE_TAB);
+        event.getRegistry()
+            .register(this.physicsCore);
+    }
+
+    private static void registerItemBlock(RegistryEvent.Register<Item> event, Block block) {
+        event.getRegistry().register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
     }
 
     void registerRecipes(RegistryEvent.Register<IRecipe> event) {

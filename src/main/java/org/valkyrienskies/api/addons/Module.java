@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package org.valkyrienskies.api.addons;
+=======
+package org.valkyrienwarfare.api.addons;
+>>>>>>> 3c2c237c7b502b80d217eef470b66a7924cc0afc
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
